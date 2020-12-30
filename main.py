@@ -26,10 +26,11 @@ class MainWindow(QtWidgets.QMainWindow):
         assert pdata is not None, "Assert: [tforms.fill_table_with_data]: \
             No <p_data> parameter specified!"
 
+        self.QMainTable.setColumnCount(4)     # Устанавливаем три колонки
+        self.QMainTable.setRowCount(len(pdata))        # и одну строку в таблице
         row_number = 0
         for data_row in pdata:
 
-            # print("*** FTWD:data ", data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD])
             emodji_item = QtWidgets.QTableWidgetItem(data_row[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD])
             # emodji_item.setTextAlignment(Qt.AlignHCenter) # QtCore.
             # emodji_item.setForeground(QBrush(QColor(data_row[db.EVENT_LIST_CONVERTED_TYPE_COLOR_FIELD])))        
@@ -49,9 +50,11 @@ class MainWindow(QtWidgets.QMainWindow):
             # name_item.setTextAlignment(QtCore.Qt.AlignHCenter)
             # name_item.setForeground(QBrush(QColor(data_row[db.EVENT_LIST_CONVERTED_TYPE_COLOR_FIELD])))
             self.QMainTable.setItem(row_number, NAME_COLUMN, name_item)
-
+            #print("*** FTWD:data ", name_item, data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD])
+            
             
             row_number += 1
+        self.QMainTable.resizeColumnsToContents()            
         self.QMainTable.setCurrentCell(0, 0)
 
 
@@ -99,7 +102,9 @@ class MainWindow(QtWidgets.QMainWindow):
         data = self.load_data()
         # self.QMainTable.setColumnCount(TABLE_COLUMNS_COUNT)
         # model = QStandartItemModel()
+        # print("*** MN:INIT:FILL")
         self.fill_table_with_data(data)
+        # print("*** MN:INIT:SHOW")
         self.show()
 
 
