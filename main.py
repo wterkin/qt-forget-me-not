@@ -5,11 +5,18 @@ from datetime import datetime
 from PyQt5 import QtWidgets
 from PyQt5 import uic
 
+
 import c_config as cfg
 import c_constants as const
 import c_database as db
 
 TABLE_COLUMNS_COUNT = 4
+
+EMODJ_COLUMN = 0
+TYPE_COLUMN = 1
+DATE_COLUMN = 2
+NAME_COLUMN = 3
+
 
 class MainWindow(QtWidgets.QMainWindow):
     """Класс."""
@@ -22,6 +29,7 @@ class MainWindow(QtWidgets.QMainWindow):
         row_number = 0
         for data_row in pdata:
 
+            # print("*** FTWD:data ", data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD])
             emodji_item = QtWidgets.QTableWidgetItem(data_row[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD])
             # emodji_item.setTextAlignment(Qt.AlignHCenter) # QtCore.
             # emodji_item.setForeground(QBrush(QColor(data_row[db.EVENT_LIST_CONVERTED_TYPE_COLOR_FIELD])))        
@@ -90,6 +98,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.database.create_database()
         data = self.load_data()
         # self.QMainTable.setColumnCount(TABLE_COLUMNS_COUNT)
+        # model = QStandartItemModel()
         self.fill_table_with_data(data)
         self.show()
 

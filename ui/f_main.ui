@@ -14,16 +14,9 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QTableView" name="QMainTable">
-      <property name="font">
-       <font>
-        <family>DejaVu Math TeX Gyre</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-     </widget>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTableWidget" name="QMainTable"/>
     </item>
    </layout>
   </widget>
