@@ -5,7 +5,7 @@ from PyQt5 import uic
 
 from pathlib import Path
 
-FORMS_FOLDER = "forms/"
+FORMS_FOLDER = "ui/"
 MAIN_WINDOW_FORM = "f_main.ui"
 
 

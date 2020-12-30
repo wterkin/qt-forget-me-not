@@ -47,7 +47,7 @@
   <action name="actionEventsList">
    <property name="icon">
     <iconset>
-     <normaloff>icons/view-pim-tasks.png</normaloff>icons/view-pim-tasks.png</iconset>
+     <normaloff>view-pim-tasks.png</normaloff>view-pim-tasks.png</iconset>
    </property>
    <property name="text">
     <string>Список событий</string>
@@ -62,7 +62,7 @@
   <action name="actionExit">
    <property name="icon">
     <iconset>
-     <normaloff>icons/system-log-out.png</normaloff>icons/system-log-out.png</iconset>
+     <normaloff>system-log-out.png</normaloff>system-log-out.png</iconset>
    </property>
    <property name="text">
     <string>Выход</string>
