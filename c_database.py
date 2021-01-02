@@ -310,9 +310,9 @@ class CDatabase(object):
 
             queried_data = queried_data.filter(c_event.CEvent.fperiod==const.EVENT_ONE_SHOT, 
                                                and_(c_event.CEvent.fday>=date_from.day,
-                                               and_(c_event.CEvent.fmonth>=date_from.fmonth,
+                                               and_(c_event.CEvent.fmonth>=date_from.month,
                                                and_(c_event.CEvent.fday<=date_to.day,
-                                               and_(c_event.CEvent.fmonth<=date_to.fmonth,
+                                               and_(c_event.CEvent.fmonth<=date_to.month,
                                                and_(c_event.CEvent.fstatus>0))))))
 
             queried_data = queried_data.order_by(c_event.CEvent.fmonth, c_event.CEvent.fday)
@@ -405,9 +405,9 @@ class CDatabase(object):
 
             queried_data = queried_data.filter(c_event.CEvent.fperiod==const.EVENT_YEAR_PERIOD, 
                                                and_(c_event.CEvent.fday>=date_from.day,
-                                               and_(c_event.CEvent.fmonth>=date_from.fmonth,
+                                               and_(c_event.CEvent.fmonth>=date_from.month,
                                                and_(c_event.CEvent.fday<=date_to.day,
-                                               and_(c_event.CEvent.fmonth<=date_to.fmonth,
+                                               and_(c_event.CEvent.fmonth<=date_to.month,
                                                and_(c_event.CEvent.fstatus>0))))))
 
             queried_data = queried_data.order_by(c_event.CEvent.fmonth, c_event.CEvent.fday)

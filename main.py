@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+## -*- coding: utf-8 -*-
 """Qt оболочка для forget-me-not."""
 import sys
 from pathlib import Path
@@ -13,13 +15,78 @@ import c_database as db
 TABLE_COLUMNS_COUNT = 4
 
 EMODJ_COLUMN = 0
-TYPE_COLUMN = 1
-DATE_COLUMN = 2
+DATE_COLUMN = 1
+TYPE_COLUMN = 2
 NAME_COLUMN = 3
 
 
 class MainWindow(QtWidgets.QMainWindow):
     """Класс."""
+    def calculate_summary_width_of_content(self, pwidthes_list):
+        """ Вычисляет суммарную длину списка """
+
+        assert pwidthes_list is not None, "Assert: [main.calculate_summary_width_of_content]: \
+            No <pwidthes_list> parameter specified!"
+        sum_width = 0
+        for width in pwidthes_list:
+
+            sum_width += width
+            
+        return sum_width
+    
+    
+    def calculate_table_columns_width(self):
+        """ Устанавливает ширину столбцов таблицы в зависимости от содержимого """
+
+        #*** Получим длины содержимого столбцов
+        l_widthes = get_table_cells_value_lengths(p_widget)
+
+        #*** Рассчитаем процент ширины таблицы
+        l_table_width = p_widget.width()# так надо!
+        l_table_width -= (l_table_width/100)*6
+        l_table_width_percent = (l_table_width) / 100
+
+        #*** Получим общую длину содержимого столбцов и рассчит. процент
+        l_sum_width = calculate_summary_width_of_content(l_widthes, p_widget.columnCount(), \
+            p_hidden_columns)
+        l_sum_width_percent = l_sum_width / 100
+
+        #*** Нет ли у нас столбцов, которые будут короче 32 пикселей?
+        #columnwidth=(32/(tabwidth/100))*(summwidth/100)
+        l_minimal_width = int((32/l_table_width_percent)*l_sum_width_percent) + 1
+        l_recalc_flag = False
+        for l_column in range(p_widget.columnCount()):
+
+            if l_column not in p_hidden_columns:
+
+                if l_widthes[l_column] < l_minimal_width:
+
+                    l_widthes[l_column] = l_minimal_width
+                    l_recalc_flag = True
+
+        #*** Пересчет нужен?
+        if l_recalc_flag:
+
+            l_sum_width = calculate_summary_width_of_content(l_widthes, \
+                p_widget.columnCount(), p_hidden_columns)
+            l_sum_width_percent = l_sum_width / 100
+
+        #*** Рассчитаем коэффициенты для каждого столбца
+        l_coefficients = dict()
+        for l_column in range(p_widget.columnCount()):
+
+            if l_column not in p_hidden_columns:
+
+                l_coefficients[l_column] = l_widthes[l_column] / l_sum_width_percent
+
+        #*** Рассчитываем и выставляем ширины столбцов
+        for l_column in range(p_widget.columnCount()):
+
+            if l_column not in p_hidden_columns:
+
+                l_column_width = int(l_table_width_percent * l_coefficients[l_column])
+                p_widget.setColumnWidth(l_column, l_column_width)
+    
     def fill_table_with_data(self, pdata):
         """ Заполняет таблицу данными """
 
@@ -56,6 +123,18 @@ class MainWindow(QtWidgets.QMainWindow):
             row_number += 1
         self.QMainTable.resizeColumnsToContents()            
         self.QMainTable.setCurrentCell(0, 0)
+
+
+    def get_table_cells_value_lengths(self):
+        """ Возвращает список длин содержимого ячеек текущей строки """
+
+        current_row = self.QMainTable.currentRow()
+        content_widthes = list()
+        for column_number in range(self.QMainTable.columnCount()):
+
+            content_len = len(str(self.QMainTable.item(current_row, column_number).text()))
+            content_widthes.append(content_len)
+        return content_widthes
 
 
     def is_database_exists(self):
@@ -104,6 +183,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # model = QStandartItemModel()
         # print("*** MN:INIT:FILL")
         self.fill_table_with_data(data)
+        self.QMainTable.resizeColumnsToContents()
         # print("*** MN:INIT:SHOW")
         self.show()
 

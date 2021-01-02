@@ -16,7 +16,11 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QTableWidget" name="QMainTable"/>
+     <widget class="QTableWidget" name="QMainTable">
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -35,7 +39,9 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionEventsList"/>
+   <addaction name="separator"/>
    <addaction name="actionExit"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionEventsList">
    <property name="icon">
