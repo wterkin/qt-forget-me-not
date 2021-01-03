@@ -12,135 +12,67 @@ import c_config as cfg
 import c_constants as const
 import c_database as db
 
-TABLE_COLUMNS_COUNT = 4
 
-EMODJ_COLUMN = 0
-DATE_COLUMN = 1
-TYPE_COLUMN = 2
-NAME_COLUMN = 3
 
 
 class MainWindow(QtWidgets.QMainWindow):
     """Класс."""
-    def calculate_summary_width_of_content(self, pwidthes_list):
-        """ Вычисляет суммарную длину списка """
+    def __init__(self):
+        """Конструктор класса."""
+        super(MainWindow, self).__init__()
+        self.application_folder = Path.cwd()
+        uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.MAIN_WINDOW_FORM, self)
+        self.config = cfg.CConfiguration()
+        self.database = db.CDatabase(self.config)
+        if not self.is_database_exists():
+        
+            self.database.create_database()
+        actual_data = self.load_data()
+        self.display_content(actual_data)
+        # self.QMainTable.setColumnCount(TABLE_COLUMNS_COUNT)
+        # model = QStandartItemModel()
+        # print("*** MN:INIT:FILL")
+        #self.fill_table_with_data(data)
+        #self.QMainTable.resizeColumnsToContents()
+        #self.adjust_columns()
+        # print("*** MN:INIT:SHOW")
+        self.show()
 
-        assert pwidthes_list is not None, "Assert: [main.calculate_summary_width_of_content]: \
-            No <pwidthes_list> parameter specified!"
-        sum_width = 0
-        for width in pwidthes_list:
 
-            sum_width += width
+    def display_content(self, pactual_data):
+        """Генерирует HTML-код на основании выборки и выводит его в виджет."""
+        #  view.setHtml(html)
+        #main.document().setDefaultStyleSheet(
+                    #'body {color: #333; font-size: 14px;} '
+                    #'h2 {background: #CCF; color: #443;} '
+                    #'h1 {background: #001133; color: white;} '
+                #)
+        #main.setStyleSheet('background-color: #EEF;')
+        #main.insertHtml(fh.read())
+        style_sheet = "<style>"
+        event_type_objects_list = self.database.get_event_types_objects_list()
+        for event_type in event_type_objects_list:
             
-        return sum_width
-    
-    
-    def calculate_table_columns_width(self):
-        """ Устанавливает ширину столбцов таблицы в зависимости от содержимого """
-
-        #*** Получим длины содержимого столбцов
-        l_widthes = get_table_cells_value_lengths(p_widget)
-
-        #*** Рассчитаем процент ширины таблицы
-        l_table_width = p_widget.width()# так надо!
-        l_table_width -= (l_table_width/100)*6
-        l_table_width_percent = (l_table_width) / 100
-
-        #*** Получим общую длину содержимого столбцов и рассчит. процент
-        l_sum_width = calculate_summary_width_of_content(l_widthes, p_widget.columnCount(), \
-            p_hidden_columns)
-        l_sum_width_percent = l_sum_width / 100
-
-        #*** Нет ли у нас столбцов, которые будут короче 32 пикселей?
-        #columnwidth=(32/(tabwidth/100))*(summwidth/100)
-        l_minimal_width = int((32/l_table_width_percent)*l_sum_width_percent) + 1
-        l_recalc_flag = False
-        for l_column in range(p_widget.columnCount()):
-
-            if l_column not in p_hidden_columns:
-
-                if l_widthes[l_column] < l_minimal_width:
-
-                    l_widthes[l_column] = l_minimal_width
-                    l_recalc_flag = True
-
-        #*** Пересчет нужен?
-        if l_recalc_flag:
-
-            l_sum_width = calculate_summary_width_of_content(l_widthes, \
-                p_widget.columnCount(), p_hidden_columns)
-            l_sum_width_percent = l_sum_width / 100
-
-        #*** Рассчитаем коэффициенты для каждого столбца
-        l_coefficients = dict()
-        for l_column in range(p_widget.columnCount()):
-
-            if l_column not in p_hidden_columns:
-
-                l_coefficients[l_column] = l_widthes[l_column] / l_sum_width_percent
-
-        #*** Рассчитываем и выставляем ширины столбцов
-        for l_column in range(p_widget.columnCount()):
-
-            if l_column not in p_hidden_columns:
-
-                l_column_width = int(l_table_width_percent * l_coefficients[l_column])
-                p_widget.setColumnWidth(l_column, l_column_width)
-    
-    def fill_table_with_data(self, pdata):
-        """ Заполняет таблицу данными """
-
-        assert pdata is not None, "Assert: [tforms.fill_table_with_data]: \
-            No <p_data> parameter specified!"
-
-        self.QMainTable.setColumnCount(4)     # Устанавливаем три колонки
-        self.QMainTable.setRowCount(len(pdata))        # и одну строку в таблице
-        row_number = 0
-        for data_row in pdata:
-
-            emodji_item = QtWidgets.QTableWidgetItem(data_row[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD])
-            # emodji_item.setTextAlignment(Qt.AlignHCenter) # QtCore.
-            # emodji_item.setForeground(QBrush(QColor(data_row[db.EVENT_LIST_CONVERTED_TYPE_COLOR_FIELD])))        
-            self.QMainTable.setItem(row_number, EMODJ_COLUMN, emodji_item)
-
-            date_item = QtWidgets.QTableWidgetItem(f"{data_row[db.EVENT_LIST_CONVERTED_DATE_FIELD]:%d.%m.%Y}")
-            # date_item.setTextAlignment(QtCore.Qt.AlignHCenter)
-            # date_item.setForeground(QBrush(QColor(data_row[db.EVENT_LIST_CONVERTED_TYPE_COLOR_FIELD])))
-            self.QMainTable.setItem(row_number, DATE_COLUMN, date_item)
+            style_sheet += " .style_"+f"{event_type.id}"+" {"+f" color: {event_type.fcolor};"+" }\n"
+            #style_sheet += f"style_{event_type.id} \{ color: {event_type.fcolor}; \}"
+        style_sheet += "</style>"
+        print(style_sheet)
+        self.textBrowser.setStyleSheet(style_sheet)
+        html_document = "<table>\n"
+        
+        for row in pactual_data:
             
-            type_item = QtWidgets.QTableWidgetItem(data_row[db.EVENT_LIST_CONVERTED_TYPE_NAME_FIELD])
-            # type_item.setTextAlignment(QtCore.Qt.AlignHCenter)
-            # type_item.setForeground(QBrush(QColor(data_row[db.EVENT_LIST_CONVERTED_TYPE_COLOR_FIELD])))
-            self.QMainTable.setItem(row_number, TYPE_COLUMN, type_item)
-
-            name_item = QtWidgets.QTableWidgetItem(data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD])
-            # name_item.setTextAlignment(QtCore.Qt.AlignHCenter)
-            # name_item.setForeground(QBrush(QColor(data_row[db.EVENT_LIST_CONVERTED_TYPE_COLOR_FIELD])))
-            self.QMainTable.setItem(row_number, NAME_COLUMN, name_item)
-            #print("*** FTWD:data ", name_item, data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD])
-            
-            
-            row_number += 1
-        self.QMainTable.resizeColumnsToContents()            
-        self.QMainTable.setCurrentCell(0, 0)
-
-
-    def get_table_cells_value_lengths(self):
-        """ Возвращает список длин содержимого ячеек текущей строки """
-
-        current_row = self.QMainTable.currentRow()
-        content_widthes = list()
-        for column_number in range(self.QMainTable.columnCount()):
-
-            content_len = len(str(self.QMainTable.item(current_row, column_number).text()))
-            content_widthes.append(content_len)
-        return content_widthes
+            html_document += self.make_html_row(row)
+        html_document += "</table>"
+        print(html_document)
+        self.textBrowser.insertHtml(html_document)
 
 
     def is_database_exists(self):
         """Проверяет наличие базы данных по пути в конфигурации."""
         config_folder_path = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY))
         return config_folder_path.exists()
+
 
     def load_data(self):
         """Получает список событий за интервал, определенный в конфиге и отображает их."""
@@ -168,27 +100,22 @@ class MainWindow(QtWidgets.QMainWindow):
             # data_row += 1
         return(sorted_data)
 
-    def __init__(self):
-        """Конструктор класса."""
-        super(MainWindow, self).__init__()
-        self.application_folder = Path.cwd()
-        uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.MAIN_WINDOW_FORM, self)
-        self.config = cfg.CConfiguration()
-        self.database = db.CDatabase(self.config)
-        if not self.is_database_exists():
+
+    def make_html_row(self, data_row):
+        """Создает строку HTML с заданными параметрами."""
+        type_id = data_row[db.EVENT_LIST_CONVERTED_TYPE_ID_FIELD]
+        emodji = data_row[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD]
+        type_name = data_row[db.EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]
+        event_date = data_row[db.EVENT_LIST_CONVERTED_DATE_FIELD]
+        event_name = data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD]
         
-            self.database.create_database()
-        data = self.load_data()
-        # self.QMainTable.setColumnCount(TABLE_COLUMNS_COUNT)
-        # model = QStandartItemModel()
-        # print("*** MN:INIT:FILL")
-        self.fill_table_with_data(data)
-        self.QMainTable.resizeColumnsToContents()
-        # print("*** MN:INIT:SHOW")
-        self.show()
-
-
-
+        #html_line = (f"<tr class='style_{data_row[EVENT_LIST_CONVERTED_TYPE_ID_FIELD]}'>
+                       #<td>{data_row[EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD]}
+                           #{data_row[EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]}
+                           #{data_row[EVENT_LIST_CONVERTED_DATE_FIELD]}
+                           #{data_row[EVENT_LIST_CONVERTED_NAME_FIELD]}<td></tr>")
+                           
+        return f"<tr><td class='style_{type_id}'>{emodji} {type_name} {event_date:%d.%m.%Y} {event_name} </td></tr>\n"
 
 if __name__ == '__main__':
     application = QtWidgets.QApplication(sys.argv)

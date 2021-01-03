@@ -436,14 +436,18 @@ class CDatabase(object):
 
     def get_event_types_list(self): # +
         """Возвращает список ID и наименований типов событий."""
-        event_types_name_list = []
-        event_types_id_list = []
+        event_types_name_list = list()
+        event_types_id_list = list()
         queried_data = self.session.query(c_eventtype.CEventType).order_by(c_eventtype.CEventType.fname)
         for event_type in queried_data:
             
             event_types_name_list.append(event_type.fname)
             event_types_id_list.append(event_type.id)
         return event_types_id_list, event_types_name_list
+
+    def get_event_types_objects_list(self):
+        """Возвращает список объектов класса CEventType."""
+        return self.session.query(c_eventtype.CEventType).order_by(c_eventtype.CEventType.fname)
 
 
     def get_periods_list(self): # +
