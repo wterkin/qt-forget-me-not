@@ -1,6 +1,7 @@
 FORMS_FOLDER = "ui/"
 MAIN_WINDOW_FORM = "f_main.ui"
 EVENT_LIST_FORM = "f_eventlist.ui"
+EVENT_EDITOR_FORM = "f_eventeditor.ui"
 
 #MAIN_WINDOW_WIDTH = 800 
 #MAIN_WINDOW_HEIGHT = 600

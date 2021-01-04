@@ -1,21 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import tkinter as tk
-from tkinter import ttk
-import tkcalendar as tkcal
+from PyQt5 import QtWidgets
+from PyQt5 import uic
 
 from datetime import datetime
 
-import c_constants as cnst
+import c_constants as const
 import c_tools as tls
 
-class EventEditor(tk.Toplevel):
-    def __init__(self, pmaster, pdatabase, pid, **kwargs):
+class CEventEditor(tk.Toplevel):
+    def __init__(self, pdatabase, papplication_folder, pid, ):
         # *** Конструктор
-        tk.Toplevel.__init__(self, pmaster, **kwargs)
-        self.master = pmaster
+        super(CEventEditor(), self).__init__()
         self.database = pdatabase
         self.id = pid
+        self.application_folder = papplication_folder
+        uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_EDITOR_FORM, self)
         self.construct_window()
         # *** Загрузим список типов событий
         self.load_event_types_list()
