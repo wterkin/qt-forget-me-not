@@ -11,31 +11,28 @@ from PyQt5 import uic
 import c_config as cfg
 import c_constants as const
 import c_database as db
+import c_eventlist as evlst
 
+TYPE_SEPARATOR = " : "
 
-
-
-class MainWindow(QtWidgets.QMainWindow):
+class CMainWindow(QtWidgets.QMainWindow):
     """Класс."""
     def __init__(self):
         """Конструктор класса."""
-        super(MainWindow, self).__init__()
+        super(CMainWindow, self).__init__()
         self.application_folder = Path.cwd()
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.MAIN_WINDOW_FORM, self)
+        self.actionEventsList.triggered.connect(self.event_list_show)
+
         self.config = cfg.CConfiguration()
+        
         self.database = db.CDatabase(self.config)
         if not self.is_database_exists():
         
             self.database.create_database()
+
         actual_data = self.load_data()
         self.display_content(actual_data)
-        # self.QMainTable.setColumnCount(TABLE_COLUMNS_COUNT)
-        # model = QStandartItemModel()
-        # print("*** MN:INIT:FILL")
-        #self.fill_table_with_data(data)
-        #self.QMainTable.resizeColumnsToContents()
-        #self.adjust_columns()
-        # print("*** MN:INIT:SHOW")
         self.show()
 
 
@@ -92,6 +89,10 @@ class MainWindow(QtWidgets.QMainWindow):
                #""" % (fontfamily, fontfamily)          
           
 
+    def event_list_show(self):
+        """Вызывает окно списка событий."""
+        evlst.CEventList(self.database, self.application_folder)
+
     def is_database_exists(self):
         """Проверяет наличие базы данных по пути в конфигурации."""
         config_folder_path = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY))
@@ -139,9 +140,11 @@ class MainWindow(QtWidgets.QMainWindow):
                            #{data_row[EVENT_LIST_CONVERTED_DATE_FIELD]}
                            #{data_row[EVENT_LIST_CONVERTED_NAME_FIELD]}<td></tr>")
                            
-        return f"<tr><td class='style_{type_id}'>{emodji} {type_name} {event_date:%d.%m.%Y} {event_name} </td></tr>\n"
+        return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} </td></tr>\n"
+
+
 
 if __name__ == '__main__':
     application = QtWidgets.QApplication(sys.argv)
-    main_window = MainWindow()
+    main_window = CMainWindow()
     application.exec_()

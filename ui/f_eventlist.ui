@@ -42,7 +42,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../icons/list-add.png</normaloff>../icons/list-add.png</iconset>
+          <normaloff>list-add.png</normaloff>list-add.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -59,7 +59,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../icons/accessories-text-editor.png</normaloff>../icons/accessories-text-editor.png</iconset>
+          <normaloff>accessories-text-editor.png</normaloff>accessories-text-editor.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -76,7 +76,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../icons/list-remove.png</normaloff>../icons/list-remove.png</iconset>
+          <normaloff>list-remove.png</normaloff>list-remove.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -93,7 +93,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../icons/system-log-out.png</normaloff>../icons/system-log-out.png</iconset>
+          <normaloff>system-log-out.png</normaloff>system-log-out.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -120,7 +120,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QListView" name="listView"/>
+    <widget class="QListWidget" name="listWidget"/>
    </item>
   </layout>
  </widget>
