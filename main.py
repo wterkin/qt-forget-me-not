@@ -50,23 +50,47 @@ class MainWindow(QtWidgets.QMainWindow):
         #main.setStyleSheet('background-color: #EEF;')
         #main.insertHtml(fh.read())
         style_sheet = "<style>"
+        print(style_sheet)
+        self.textBrowser.setStyleSheet(style_sheet)
+        #html_document = "<table>\n"
+        # self.log.insertHtml('<div style="color:%s"><pre><code>%s</code></pre></div><br>' % (color.lower(), escape(msg)))
+        html_document = """<html>\n
+                             <head>\n
+                               <style>\n"""
         event_type_objects_list = self.database.get_event_types_objects_list()
         for event_type in event_type_objects_list:
             
-            style_sheet += " .style_"+f"{event_type.id}"+" {"+f" color: {event_type.fcolor};"+" }\n"
+            html_document += "      .style_"+f"{event_type.id}"+" {"+f" color: {event_type.fcolor};"+" }\n"
             #style_sheet += f"style_{event_type.id} \{ color: {event_type.fcolor}; \}"
-        style_sheet += "</style>"
-        print(style_sheet)
-        self.textBrowser.setStyleSheet(style_sheet)
-        html_document = "<table>\n"
-        
+        html_document += """    </style>\n
+                              </head>\n
+                              <body>\n
+                                <table>\n"""
+                               
         for row in pactual_data:
             
             html_document += self.make_html_row(row)
-        html_document += "</table>"
+        html_document += """    </table>\n
+                              </body>\n
+                            </html>"""
         print(html_document)
         self.textBrowser.insertHtml(html_document)
 
+               #p {font-size: 16px;
+                  #font-family: "%s";
+                  #margin-right:50px;
+                  #margin-left:50px;
+                  #}
+               #p1 {font-size: 16px;
+                   #font-family: "%s";
+                   #margin-right:50px;
+                   #margin-left:50px;
+                   #}
+               #</style>
+               #</head>
+               #<body>
+               #""" % (fontfamily, fontfamily)          
+          
 
     def is_database_exists(self):
         """Проверяет наличие базы данных по пути в конфигурации."""
@@ -75,7 +99,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
     def load_data(self):
-        """Получает список событий за интервал, определенный в конфиге и отображает их."""
+        """Получает список событий за интервал, определенный в конфиге."""
         def sort_list(x):
             
             
