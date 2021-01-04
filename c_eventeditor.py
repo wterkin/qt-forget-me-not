@@ -8,15 +8,23 @@ from datetime import datetime
 import c_constants as const
 import c_tools as tls
 
-class CEventEditor(tk.Toplevel):
-    def __init__(self, pdatabase, papplication_folder, pid, ):
+    #"""Класс окна списка событий."""
+    #def __init__(self, pdatabase, papplication_folder):
+        #"""Конструктор."""
+        #super(CEventList, self).__init__()
+        #self.database = pdatabase
+        #self.application_folder = papplication_folder
+        #uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_LIST_FORM, self)
+
+
+class CEventEditor(QtWidgets.QDialog):
+    def __init__(self, pdatabase, papplication_folder, pid=None):
         # *** Конструктор
-        super(CEventEditor(), self).__init__()
+        super(CEventEditor, self).__init__()
         self.database = pdatabase
         self.id = pid
         self.application_folder = papplication_folder
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_EDITOR_FORM, self)
-        self.construct_window()
         # *** Загрузим список типов событий
         self.load_event_types_list()
         # *** Загрузим список периодов
@@ -25,11 +33,7 @@ class CEventEditor(tk.Toplevel):
 
             self.load_data()
             
-        self.focus_set()
-        self.transient(self.master)
-        self.grab_set()
-        self.master.wait_window(self)
-        
+            
         
     def construct_window(self):
         """Создает интерфейс окна."""
@@ -118,12 +122,16 @@ class CEventEditor(tk.Toplevel):
     def load_event_types_list(self):
         """Загружает список типов событий в listbox."""
         self.event_types_id_list, event_types_name_list = self.database.get_event_types_list()
-        self.event_type_combo["values"] = event_types_name_list
+        self.comboBox_EventType.clear()
+        self.comboBox_EventType.addItems(event_types_name_list)
+        #self.event_type_combo["values"] = event_types_name_list
     
     def load_periods_list(self):
         """Загружает список периодов в listbox."""
         self.event_period_id_list, event_period_name_list = self.database.get_periods_list()
-        self.event_period_combo["values"] = event_period_name_list
+        self.comboBox_EventPeriod.clear()
+        self.comboBox_EventPeriod.addItems(event_period_name_list)
+        #self.event_period_combo["values"] = event_period_name_list
 
     
     def save_data(self):
@@ -150,7 +158,3 @@ class CEventEditor(tk.Toplevel):
         self.destroy()
     
     
-if __name__ == '__main__':
-    root = tk.Tk()  
-    event_editor = EventEditor(root)
-    root.mainloop()

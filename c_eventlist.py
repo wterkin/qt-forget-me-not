@@ -17,7 +17,7 @@ class CEventList(QtWidgets.QDialog):
         self.database = pdatabase
         self.application_folder = papplication_folder
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_LIST_FORM, self)
-        self.QButtonAdd.triggered.connect(self.insert_event)
+        self.QButtonAdd.clicked.connect(self.insert_event)
         self.QButtonEdit.triggered.connect(self.update_event)
         self.QButtonDelete.triggered.connect(self.delete_event)
         self.load_data()
@@ -38,10 +38,9 @@ class CEventList(QtWidgets.QDialog):
     
     def insert_event(self):
         """Добавляет новое событие в базу."""
-        #event_editor = eved.EventEditor(self,
-                                        #pdatabase=self.database,
-                                        #pid=None)
-        pass
+        print("*************")
+        dialog = eved.CEventEditor(self.database, self.application_folder, None)
+        dialog.exec()
         self.load_data()
 
 

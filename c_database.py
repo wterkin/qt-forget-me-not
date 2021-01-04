@@ -472,7 +472,7 @@ class CDatabase(object):
         query = query.all()
         for event_id, event_name, event_type_name in query:
             
-            event_name_list.append(event_type_name+event_name)
+            event_name_list.append(f"{event_type_name}{const.TYPE_SEPARATOR}{event_name}")
             event_id_list.append(event_id)
         return event_id_list, event_name_list
 
