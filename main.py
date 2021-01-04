@@ -35,22 +35,12 @@ class CMainWindow(QtWidgets.QMainWindow):
         self.display_content(actual_data)
         self.show()
 
-
+    
     def display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
-        #  view.setHtml(html)
-        #main.document().setDefaultStyleSheet(
-                    #'body {color: #333; font-size: 14px;} '
-                    #'h2 {background: #CCF; color: #443;} '
-                    #'h1 {background: #001133; color: white;} '
-                #)
-        #main.setStyleSheet('background-color: #EEF;')
-        #main.insertHtml(fh.read())
-        style_sheet = "<style>"
-        print(style_sheet)
-        self.textBrowser.setStyleSheet(style_sheet)
-        #html_document = "<table>\n"
-        # self.log.insertHtml('<div style="color:%s"><pre><code>%s</code></pre></div><br>' % (color.lower(), escape(msg)))
+        #style_sheet = "<style>"
+        #print(style_sheet)
+        #self.textBrowser.setStyleSheet(style_sheet)
         html_document = """<html>\n
                              <head>\n
                                <style>\n"""
@@ -58,19 +48,17 @@ class CMainWindow(QtWidgets.QMainWindow):
         for event_type in event_type_objects_list:
             
             html_document += "      .style_"+f"{event_type.id}"+" {"+f" color: {event_type.fcolor};"+" }\n"
-            #style_sheet += f"style_{event_type.id} \{ color: {event_type.fcolor}; \}"
         html_document += """    </style>\n
                               </head>\n
                               <body>\n
                                 <table>\n"""
-                               
         for row in pactual_data:
             
             html_document += self.make_html_row(row)
         html_document += """    </table>\n
                               </body>\n
                             </html>"""
-        print(html_document)
+        #print(html_document)
         self.textBrowser.insertHtml(html_document)
 
                #p {font-size: 16px;
@@ -91,7 +79,9 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def event_list_show(self):
         """Вызывает окно списка событий."""
-        evlst.CEventList(self.database, self.application_folder)
+        dialog = evlst.CEventList(self.database, self.application_folder)
+        dialog.exec()
+
 
     def is_database_exists(self):
         """Проверяет наличие базы данных по пути в конфигурации."""
@@ -115,14 +105,6 @@ class CMainWindow(QtWidgets.QMainWindow):
         db_one_shot_data = self.database.get_actual_one_shot_events()
         full_data.extend(db_one_shot_data)
         sorted_data = sorted(full_data, key=sort_list)
-        # data_row = 1.0
-        # for event in sorted_data:
-            
-            # row_content = f"""{event[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD]}
-                              # {event[db.EVENT_LIST_CONVERTED_DATE_FIELD]:%d.%m.%Y}
-                              # {event[db.EVENT_LIST_CONVERTED_NAME_FIELD]}"""
-            # print(row_content)
-            # data_row += 1
         return(sorted_data)
 
 
@@ -133,13 +115,6 @@ class CMainWindow(QtWidgets.QMainWindow):
         type_name = data_row[db.EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]
         event_date = data_row[db.EVENT_LIST_CONVERTED_DATE_FIELD]
         event_name = data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD]
-        
-        #html_line = (f"<tr class='style_{data_row[EVENT_LIST_CONVERTED_TYPE_ID_FIELD]}'>
-                       #<td>{data_row[EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD]}
-                           #{data_row[EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]}
-                           #{data_row[EVENT_LIST_CONVERTED_DATE_FIELD]}
-                           #{data_row[EVENT_LIST_CONVERTED_NAME_FIELD]}<td></tr>")
-                           
         return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} </td></tr>\n"
 
 

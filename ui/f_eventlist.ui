@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>550</width>
+    <height>375</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,6 +37,9 @@
       </property>
       <item>
        <widget class="QToolButton" name="QButtonAdd">
+        <property name="toolTip">
+         <string>Добавить событие</string>
+        </property>
         <property name="text">
          <string>Добавить</string>
         </property>
@@ -54,6 +57,9 @@
       </item>
       <item>
        <widget class="QToolButton" name="QButtonEdit">
+        <property name="toolTip">
+         <string>Редактировать событие</string>
+        </property>
         <property name="text">
          <string>Редактировать</string>
         </property>
@@ -71,12 +77,15 @@
       </item>
       <item>
        <widget class="QToolButton" name="QButtonDelete">
+        <property name="toolTip">
+         <string>Удалить событие</string>
+        </property>
         <property name="text">
          <string>Удалить</string>
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>list-remove.png</normaloff>list-remove.png</iconset>
+          <normaloff>kt-remove.png</normaloff>kt-remove.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -88,6 +97,9 @@
       </item>
       <item>
        <widget class="QToolButton" name="QButtonClose">
+        <property name="toolTip">
+         <string>Закрыть окно</string>
+        </property>
         <property name="text">
          <string>Закрыть</string>
         </property>

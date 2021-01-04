@@ -20,10 +20,9 @@ class CEventList(QtWidgets.QDialog):
         self.QButtonAdd.triggered.connect(self.insert_event)
         self.QButtonEdit.triggered.connect(self.update_event)
         self.QButtonDelete.triggered.connect(self.delete_event)
-        #self.load_data()
+        self.load_data()
         # *** Показываем окно
         print("Dialog")
-        self.show()
 
 
     def delete_event(self):
@@ -48,12 +47,12 @@ class CEventList(QtWidgets.QDialog):
 
     def load_data(self):
         """Обновляет данные в списке."""
-        #self.events_box.delete(0, tk.END)
-        #self.event_id_list, self.event_name_list = self.database.get_events_list()
-        #for event_name in self.event_name_list:
+        self.listWidget.clear()
+        #self.listWidget.addItem(QListWidgetItem(name, self.list))
+        self.event_id_list, self.event_name_list = self.database.get_events_list()
+        for event_name in self.event_name_list:
             #self.events_box.insert(tk.END, event_name)
-            #self.listWidget.addItem(QListItem(event_name))
-        pass    
+            self.listWidget.addItem(QtWidgets.QListWidgetItem(event_name))
 
     def update_event(self):
         """Изменяет уже существующее событие."""
