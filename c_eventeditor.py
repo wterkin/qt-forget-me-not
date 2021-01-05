@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5 import uic
 
 from datetime import datetime
@@ -68,23 +68,32 @@ class CEventEditor(QtWidgets.QDialog):
     
     def save_data(self):
         """Сохраняет введённые данные."""
-        event_date = datetime.strptime(self.event_date_entry.get(), "%d.%m.%Y")
-        event_type = self.event_types_id_list[self.event_type_combo.current()]
-        event_period = self.event_period_id_list[self.event_period_combo.current()]
-      
+        event_name = self.lineEdit_EventName.text()
+        event_date = self.dateEdit_EventDate.date().toPyDate()
+        event_type = self.event_types_id_list[self.comboBox_EventType.currentIndex()]
+        event_period = self.event_period_id_list[self.comboBox_EventPeriod.currentIndex()]
+        print("*** EE:SD:* ", event_name, event_date, event_type, event_period)
         if self.id is None:
 
-            self.database.insert_event(self.event_name_entry.get().strip(),
+            self.database.insert_event(event_name,
                                        event_date,
                                        event_type,
                                        event_period)
         else:
 
             self.database.update_event(self.id, 
-                                       self.event_name_entry.get().strip(),
+                                       event_name,
                                        event_date,
                                        event_type,
                                        event_period)
         self.destroy()
     
+    #@QtCore.pyqtSlot()
+    #def reject(self):
+        #self.close()
+
+    @QtCore.pyqtSlot()
+    def accept(self):
+        self.save_data()
+        self.close()
     

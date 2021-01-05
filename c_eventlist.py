@@ -47,10 +47,8 @@ class CEventList(QtWidgets.QDialog):
     def load_data(self):
         """Обновляет данные в списке."""
         self.listWidget.clear()
-        #self.listWidget.addItem(QListWidgetItem(name, self.list))
         self.event_id_list, self.event_name_list = self.database.get_events_list()
         for event_name in self.event_name_list:
-            #self.events_box.insert(tk.END, event_name)
             self.listWidget.addItem(QtWidgets.QListWidgetItem(event_name))
 
     def update_event(self):
@@ -60,6 +58,5 @@ class CEventList(QtWidgets.QDialog):
         event_ident = self.event_id_list[selected_item]
         dialog = eved.CEventEditor(self.database, self.application_folder, event_ident)
         dialog.exec()
-
         self.load_data()
    

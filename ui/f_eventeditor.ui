@@ -188,7 +188,7 @@
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>Dialog</receiver>
-   <slot>reject()</slot>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>316</x>
