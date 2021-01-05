@@ -18,8 +18,8 @@ class CEventList(QtWidgets.QDialog):
         self.application_folder = papplication_folder
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_LIST_FORM, self)
         self.QButtonAdd.clicked.connect(self.insert_event)
-        self.QButtonEdit.triggered.connect(self.update_event)
-        self.QButtonDelete.triggered.connect(self.delete_event)
+        self.QButtonEdit.clicked.connect(self.update_event)
+        self.QButtonDelete.clicked.connect(self.delete_event)
         self.load_data()
         # *** Показываем окно
         print("Dialog")
@@ -56,12 +56,10 @@ class CEventList(QtWidgets.QDialog):
     def update_event(self):
         """Изменяет уже существующее событие."""
         # FixMe: вот тут не передаются данные в редактор!
-        #selected_items = self.events_box.curselection()
-        #if len(selected_items) > 0:
-            #event_ident = self.event_id_list[selected_items[0]]
-            #event_editor = eved.EventEditor(self,
-                                            #pdatabase=self.database,
-                                            #pid=event_ident)
-            #self.load_data()
-        pass
+        selected_item = self.listWidget.currentRow()
+        event_ident = self.event_id_list[selected_item]
+        dialog = eved.CEventEditor(self.database, self.application_folder, event_ident)
+        dialog.exec()
+
+        self.load_data()
    

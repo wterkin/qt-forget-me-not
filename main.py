@@ -13,7 +13,8 @@ import c_constants as const
 import c_database as db
 import c_eventlist as evlst
 
-
+# ToDo: Ежедневный и еженедельный бэкап базы
+# ToDo: При каждом запуске удалять просроченные единоразовые события
 
 class CMainWindow(QtWidgets.QMainWindow):
     """Класс."""
