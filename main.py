@@ -80,8 +80,10 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def event_list_show(self):
         """Вызывает окно списка событий."""
-        dialog = evlst.CEventList(self.database, self.application_folder)
-        dialog.exec()
+        dialog = evlst.CEventList(pparent=self, 
+                                  pdatabase=self.database, 
+                                  papplication_folder=self.application_folder)
+        #dialog.open()
 
 
     def is_database_exists(self):

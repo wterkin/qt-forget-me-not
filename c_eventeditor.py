@@ -18,13 +18,13 @@ import c_tools as tls
 
 
 class CEventEditor(QtWidgets.QDialog):
-    def __init__(self, pdatabase, papplication_folder, pid=None):
+    def __init__(self, pparent, pdatabase, papplication_folder, pid=None):
         # *** Конструктор
-        super(CEventEditor, self).__init__()
+        super(CEventEditor, self).__init__(pparent)
         self.database = pdatabase
         self.application_folder = papplication_folder
         self.id = pid
-        print("*** EE:init:pid", pid)
+        #print("*** EE:init:pid", pid)
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_EDITOR_FORM, self)
         # *** Загрузим список типов событий
         self.load_event_types_list()
@@ -33,12 +33,12 @@ class CEventEditor(QtWidgets.QDialog):
         if self.id is not None:
 
             self.load_data()
-        
+    
     
     def load_data(self):
         """Процедура загрузки данных в контролы."""
         event_name, event_date, self.event_type, self.event_period = self.database.get_event_data(self.id)
-        print("*** EE:LD:n:d:t:p ", event_name, event_date, self.event_type, self.event_period)
+        #print("*** EE:LD:n:d:t:p ", event_name, event_date, self.event_type, self.event_period)
         self.lineEdit_EventName.setText(event_name)
         self.dateEdit_EventDate.setDate(event_date)
         self.comboBox_EventType.setCurrentIndex(self.event_types_id_list.index(self.event_type))
@@ -72,7 +72,7 @@ class CEventEditor(QtWidgets.QDialog):
         event_date = self.dateEdit_EventDate.date().toPyDate()
         event_type = self.event_types_id_list[self.comboBox_EventType.currentIndex()]
         event_period = self.event_period_id_list[self.comboBox_EventPeriod.currentIndex()]
-        print("*** EE:SD:* ", event_name, event_date, event_type, event_period)
+        #print("*** EE:SD:* ", event_name, event_date, event_type, event_period)
         if self.id is None:
 
             self.database.insert_event(event_name,
@@ -95,5 +95,4 @@ class CEventEditor(QtWidgets.QDialog):
     @QtCore.pyqtSlot()
     def accept(self):
         self.save_data()
-        self.close()
     

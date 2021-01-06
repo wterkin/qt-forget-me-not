@@ -1,156 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>375</height>
+    <width>504</width>
+    <height>391</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>MainWindow</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QFrame" name="frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="leftMargin">
-       <number>2</number>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>32</height>
+       </size>
       </property>
-      <property name="topMargin">
-       <number>2</number>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
       </property>
-      <property name="rightMargin">
-       <number>2</number>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
       </property>
-      <property name="bottomMargin">
-       <number>2</number>
-      </property>
-      <item>
-       <widget class="QToolButton" name="QButtonAdd">
-        <property name="toolTip">
-         <string>Добавить событие</string>
-        </property>
-        <property name="text">
-         <string>Добавить</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>list-add.png</normaloff>list-add.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="QButtonEdit">
-        <property name="toolTip">
-         <string>Редактировать событие</string>
-        </property>
-        <property name="text">
-         <string>Редактировать</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>accessories-text-editor.png</normaloff>accessories-text-editor.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="QButtonDelete">
-        <property name="toolTip">
-         <string>Удалить событие</string>
-        </property>
-        <property name="text">
-         <string>Удалить</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>kt-remove.png</normaloff>kt-remove.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="QButtonClose">
-        <property name="toolTip">
-         <string>Закрыть окно</string>
-        </property>
-        <property name="text">
-         <string>Закрыть</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>system-log-out.png</normaloff>system-log-out.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>22</width>
-          <height>22</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QListWidget" name="listWidget"/>
-   </item>
-  </layout>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>3</y>
+         <width>484</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QToolButton" name="QButtonAdd">
+          <property name="toolTip">
+           <string>Добавить событие</string>
+          </property>
+          <property name="text">
+           <string>Добавить</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>list-add.png</normaloff>list-add.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="QButtonEdit">
+          <property name="toolTip">
+           <string>Редактировать событие</string>
+          </property>
+          <property name="text">
+           <string>Редактировать</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>accessories-text-editor.png</normaloff>accessories-text-editor.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="QButtonDelete">
+          <property name="toolTip">
+           <string>Удалить событие</string>
+          </property>
+          <property name="text">
+           <string>Удалить</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>kt-remove.png</normaloff>kt-remove.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="QButtonClose">
+          <property name="toolTip">
+           <string>Закрыть окно</string>
+          </property>
+          <property name="text">
+           <string>Закрыть</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>system-log-out.png</normaloff>system-log-out.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>338</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QListWidget" name="listWidget"/>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources/>
  <connections>
   <connection>
    <sender>QButtonClose</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>Dialog</receiver>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>124</x>
-     <y>29</y>
+     <x>144</x>
+     <y>25</y>
     </hint>
     <hint type="destinationlabel">
-     <x>207</x>
-     <y>-3</y>
+     <x>498</x>
+     <y>31</y>
     </hint>
    </hints>
   </connection>

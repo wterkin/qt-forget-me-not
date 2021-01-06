@@ -9,11 +9,11 @@ import c_constants as const
 import c_eventeditor as eved
 import c_tools as tls
 
-class CEventList(QtWidgets.QDialog):
+class CEventList(QtWidgets.QMainWindow):
     """Класс окна списка событий."""
-    def __init__(self, pdatabase, papplication_folder):
+    def __init__(self, pparent, pdatabase, papplication_folder):
         """Конструктор."""
-        super(CEventList, self).__init__()
+        super(CEventList, self).__init__(pparent)
         self.database = pdatabase
         self.application_folder = papplication_folder
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_LIST_FORM, self)
@@ -21,9 +21,10 @@ class CEventList(QtWidgets.QDialog):
         self.QButtonEdit.clicked.connect(self.update_event)
         self.QButtonDelete.clicked.connect(self.delete_event)
         self.load_data()
+        print("*** EL:IN")
         # *** Показываем окно
-        print("Dialog")
-
+        self.show()
+        #self.exec()
 
     def delete_event(self):
         """Удаляет выбранное событие."""
@@ -38,10 +39,15 @@ class CEventList(QtWidgets.QDialog):
     
     def insert_event(self):
         """Добавляет новое событие в базу."""
-        print("*************")
-        dialog = eved.CEventEditor(self.database, self.application_folder, None)
+        dialog = eved.CEventEditor(pparent=self, 
+                                   pdatabase=self.database, 
+                                   papplication_folder=self.application_folder)
+        print("*** EL:IE:ex")
         dialog.exec()
+        print("*** EL:IE:ld")
         self.load_data()
+        print("*** EL:IE:sh")
+        self.show()
 
 
     def load_data(self):
@@ -53,10 +59,17 @@ class CEventList(QtWidgets.QDialog):
 
     def update_event(self):
         """Изменяет уже существующее событие."""
-        # FixMe: вот тут не передаются данные в редактор!
         selected_item = self.listWidget.currentRow()
         event_ident = self.event_id_list[selected_item]
-        dialog = eved.CEventEditor(self.database, self.application_folder, event_ident)
+        dialog = eved.CEventEditor(pparent=self, 
+                                   pdatabase=self.database, 
+                                   papplication_folder=self.application_folder, 
+                                   pid=event_ident)
+        
+        print("*** EL:UE:ex")
         dialog.exec()
+        print("*** EL:UE:ld")
         self.load_data()
+        print("*** EL:UE:sh")
+        self.show()
    
