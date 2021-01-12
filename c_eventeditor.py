@@ -3,6 +3,10 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5 import uic
 
+# from PyQt5.QtCore import *
+# from PyQt5.QtWidgets import *
+# from PyQt5.QtSql import *
+
 from datetime import datetime
 
 import c_constants as const
@@ -26,6 +30,10 @@ class CEventEditor(QtWidgets.QDialog):
         self.id = pid
         #print("*** EE:init:pid", pid)
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_EDITOR_FORM, self)
+        self.setWindowFlags(self.windowFlags()
+               | QtCore.Qt.WindowMinimizeButtonHint
+               | QtCore.Qt.WindowMaximizeButtonHint
+               )        
         # *** Загрузим список типов событий
         self.toolButton_Accept.clicked.connect(self.accept)
         self.load_event_types_list()

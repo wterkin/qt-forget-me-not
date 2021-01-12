@@ -72,7 +72,8 @@ class CEventList(QtWidgets.QMainWindow):
         
         print("*** EL:UE:ex")
         dialog.show()
-        sys.exit(dialog.exec_())
+        # sys.exit(dialog.exec_())
+        result = dialog.exec_()
         print("*** EL:UE:ld")
         self.load_data()
         print("*** EL:UE:sh")

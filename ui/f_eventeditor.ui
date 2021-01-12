@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>318</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,7 +52,14 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_EventName"/>
+         <widget class="QLineEdit" name="lineEdit_EventName">
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -193,11 +200,11 @@
        <property name="minimumSize">
         <size>
          <width>120</width>
-         <height>0</height>
+         <height>32</height>
         </size>
        </property>
        <property name="text">
-        <string>  Принять</string>
+        <string>      Принять</string>
        </property>
        <property name="icon">
         <iconset>
@@ -213,11 +220,11 @@
        <property name="minimumSize">
         <size>
          <width>120</width>
-         <height>0</height>
+         <height>32</height>
         </size>
        </property>
        <property name="text">
-        <string>  Отмена</string>
+        <string>       Отмена</string>
        </property>
        <property name="icon">
         <iconset>
