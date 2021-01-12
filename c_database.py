@@ -445,6 +445,7 @@ class CDatabase(object):
             event_types_id_list.append(event_type.id)
         return event_types_id_list, event_types_name_list
 
+
     def get_event_types_objects_list(self):
         """Возвращает список объектов класса CEventType."""
         return self.session.query(c_eventtype.CEventType).order_by(c_eventtype.CEventType.fname)

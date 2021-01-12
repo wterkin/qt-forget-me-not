@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 #import tkinter as tk
+import sys
+
+
 from PyQt5 import QtWidgets
 from PyQt5 import uic
 
@@ -57,6 +60,7 @@ class CEventList(QtWidgets.QMainWindow):
         for event_name in self.event_name_list:
             self.listWidget.addItem(QtWidgets.QListWidgetItem(event_name))
 
+
     def update_event(self):
         """Изменяет уже существующее событие."""
         selected_item = self.listWidget.currentRow()
@@ -67,9 +71,10 @@ class CEventList(QtWidgets.QMainWindow):
                                    pid=event_ident)
         
         print("*** EL:UE:ex")
-        dialog.exec()
+        dialog.show()
+        sys.exit(dialog.exec_())
         print("*** EL:UE:ld")
         self.load_data()
         print("*** EL:UE:sh")
-        self.show()
+        # self.open()
    

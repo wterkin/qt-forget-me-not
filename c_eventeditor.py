@@ -27,6 +27,7 @@ class CEventEditor(QtWidgets.QDialog):
         #print("*** EE:init:pid", pid)
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_EDITOR_FORM, self)
         # *** Загрузим список типов событий
+        self.toolButton_Accept.clicked.connect(self.accept)
         self.load_event_types_list()
         # *** Загрузим список периодов
         self.load_periods_list()
@@ -34,6 +35,10 @@ class CEventEditor(QtWidgets.QDialog):
 
             self.load_data()
     
+    def accept(self):
+        """Обработчик нажатия на клавишу 'Принять'."""
+        self.save_data()
+        
     
     def load_data(self):
         """Процедура загрузки данных в контролы."""
@@ -92,7 +97,6 @@ class CEventEditor(QtWidgets.QDialog):
     #def reject(self):
         #self.close()
 
-    @QtCore.pyqtSlot()
-    def accept(self):
-        self.save_data()
+    # @QtCore.pyqtSlot()
+    # def accept(self):
     
