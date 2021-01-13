@@ -39,29 +39,35 @@ class CMainWindow(QtWidgets.QMainWindow):
     
     def display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
-        #style_sheet = "<style>"
-        #print(style_sheet)
-        #self.textBrowser.setStyleSheet(style_sheet)
-        html_document = """<html>\n
-                             <head>\n
-                               <style>\n"""
+        # *** Формируем таблицу стилей страницы
+        css_style = "<style>\n"
         event_type_objects_list = self.database.get_event_types_objects_list()
         for event_type in event_type_objects_list:
             
-            html_document += "      .style_"+f"{event_type.id}"+" {"+f" color: {event_type.fcolor};"+" }\n"
-        html_document += """    </style>\n
+            css_style += f".style_{event_type.id} {{ color: {event_type.fcolor}; }}\n"
+        
+        css_style += "</style>"
+        # *** Формируем HTML-документ
+        html_document = f"""<html>\n
+                              <head>\n
+                                {css_style}
                               </head>\n
-                              <body>\n
-                                <table>\n"""
+                                <body>\n
+                                  <table>\n"""
+                                 
+        content = ""
         for row in pactual_data:
             
-            html_document += self.make_html_row(row)
-        html_document += """    </table>\n
+            content += self.make_html_row(row)
+        
+        html_document += f"""     {content}    
+                                </table>\n
                               </body>\n
                             </html>"""
-        #print(html_document)
+        print(html_document)
+        self.textBrowser.setStyleSheet("background-color: #3F3F3F;")
         self.textBrowser.insertHtml(html_document)
-
+        
                #p {font-size: 16px;
                   #font-family: "%s";
                   #margin-right:50px;
@@ -80,11 +86,10 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def event_list_show(self):
         """Вызывает окно списка событий."""
-        dialog = evlst.CEventList(pparent=self, 
+        window = evlst.CEventList(pparent=self, 
                                   pdatabase=self.database, 
                                   papplication_folder=self.application_folder)
-        #dialog.open()
-
+   
 
     def is_database_exists(self):
         """Проверяет наличие базы данных по пути в конфигурации."""
@@ -95,7 +100,6 @@ class CMainWindow(QtWidgets.QMainWindow):
     def load_data(self):
         """Получает список событий за интервал, определенный в конфиге."""
         def sort_list(x):
-            
             
             delta=x[db.EVENT_LIST_CONVERTED_DATE_FIELD]-datetime.now().date()
             return delta.days
