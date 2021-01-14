@@ -21,6 +21,9 @@ import c_tools as tls
         #uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_LIST_FORM, self)
 
 
+# lineEdit_Days
+# toolButton_Recalc
+
 class CEventEditor(QtWidgets.QDialog):
     def __init__(self, pparent, pdatabase, papplication_folder, pid=None):
         # *** Конструктор
