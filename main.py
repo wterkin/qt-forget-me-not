@@ -15,6 +15,8 @@ import c_eventlist as evlst
 
 # ToDo: Ежедневный и еженедельный бэкап базы
 # ToDo: При каждом запуске удалять просроченные единоразовые события
+# ToDo: Выделять сегодняшние события
+# ToDo: Сортировать список событий
 
 class CMainWindow(QtWidgets.QMainWindow):
     """Класс."""
@@ -64,7 +66,6 @@ class CMainWindow(QtWidgets.QMainWindow):
                                 </table>\n
                               </body>\n
                             </html>"""
-        print(html_document)
         self.textBrowser.setStyleSheet("background-color: #3F3F3F;")
         self.textBrowser.insertHtml(html_document)
         

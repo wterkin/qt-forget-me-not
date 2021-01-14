@@ -9,17 +9,9 @@ from PyQt5 import uic
 
 from datetime import datetime
 
+
 import c_constants as const
 import c_tools as tls
-
-    #"""Класс окна списка событий."""
-    #def __init__(self, pdatabase, papplication_folder):
-        #"""Конструктор."""
-        #super(CEventList, self).__init__()
-        #self.database = pdatabase
-        #self.application_folder = papplication_folder
-        #uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_LIST_FORM, self)
-
 
 # lineEdit_Days
 # toolButton_Recalc
@@ -31,7 +23,6 @@ class CEventEditor(QtWidgets.QDialog):
         self.database = pdatabase
         self.application_folder = papplication_folder
         self.id = pid
-        #print("*** EE:init:pid", pid)
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_EDITOR_FORM, self)
         self.setWindowFlags(self.windowFlags()
                | QtCore.Qt.WindowMinimizeButtonHint
@@ -39,6 +30,7 @@ class CEventEditor(QtWidgets.QDialog):
                )        
         # *** Загрузим список типов событий
         self.toolButton_Accept.clicked.connect(self.accept)
+        self.toolButton_Recalc.clicked.connect(self.recalc)
         self.load_event_types_list()
         # *** Загрузим список периодов
         self.load_periods_list()
@@ -80,6 +72,17 @@ class CEventEditor(QtWidgets.QDialog):
         self.event_period_id_list, event_period_name_list = self.database.get_periods_list()
         self.comboBox_EventPeriod.clear()
         self.comboBox_EventPeriod.addItems(event_period_name_list)
+
+    
+    def recalc(self):
+        """Пересчитывает введённое количество дней в дату."""
+        entered_days = self.lineEdit_Days.text()
+        date_after_days = QtCore.QDate.currentDate()
+        print("*** EvEd:REC:dad ", date_after_days)
+        print("*** EvEd:REC:ed ", int(entered_days) )
+        date_after_days = date_after_days.addDays(int(entered_days))
+        print("*** EvEd:REC:dad ", date_after_days)
+        self.dateEdit_EventDate.setDate(date_after_days)
 
     
     def save_data(self):
