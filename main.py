@@ -25,21 +25,19 @@ class CMainWindow(QtWidgets.QMainWindow):
         super(CMainWindow, self).__init__()
         self.application_folder = Path.cwd()
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.MAIN_WINDOW_FORM, self)
-        self.actionEventsList.triggered.connect(self.event_list_show)
+        self.actionEventsList.triggered.connect(self.__event_list_show)
 
         self.config = cfg.CConfiguration()
         
         self.database = db.CDatabase(self.config)
-        if not self.is_database_exists():
+        if not self.__is_database_exists():
         
             self.database.create_database()
-
-        actual_data = self.load_data()
-        self.display_content(actual_data)
+        self.update()
         self.show()
 
     
-    def display_content(self, pactual_data):
+    def __display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
         # *** Формируем таблицу стилей страницы
         css_style = "<style>\n"
@@ -60,7 +58,7 @@ class CMainWindow(QtWidgets.QMainWindow):
         content = ""
         for row in pactual_data:
             
-            content += self.make_html_row(row)
+            content += self.__make_html_row(row)
         
         html_document += f"""     {content}    
                                 </table>\n
@@ -85,20 +83,20 @@ class CMainWindow(QtWidgets.QMainWindow):
                #""" % (fontfamily, fontfamily)          
           
 
-    def event_list_show(self):
+    def __event_list_show(self):
         """Вызывает окно списка событий."""
         window = evlst.CEventList(pparent=self, 
                                   pdatabase=self.database, 
                                   papplication_folder=self.application_folder)
    
 
-    def is_database_exists(self):
+    def __is_database_exists(self):
         """Проверяет наличие базы данных по пути в конфигурации."""
         config_folder_path = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY))
         return config_folder_path.exists()
 
 
-    def load_data(self):
+    def __load_data(self):
         """Получает список событий за интервал, определенный в конфиге."""
         def sort_list(x):
             
@@ -116,7 +114,7 @@ class CMainWindow(QtWidgets.QMainWindow):
         return(sorted_data)
 
 
-    def make_html_row(self, data_row):
+    def __make_html_row(self, data_row):
         """Создает строку HTML с заданными параметрами."""
         type_id = data_row[db.EVENT_LIST_CONVERTED_TYPE_ID_FIELD]
         emodji = data_row[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD]
@@ -126,6 +124,10 @@ class CMainWindow(QtWidgets.QMainWindow):
         return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} </td></tr>\n"
 
 
+    def update(self):
+        """Обновляет содержимое браузера."""
+        self.__display_content(self.__load_data())
+        
 
 if __name__ == '__main__':
     application = QtWidgets.QApplication(sys.argv)
