@@ -51,7 +51,7 @@ class CEventList(QtWidgets.QMainWindow):
         window = eved.CEventEditor(pparent=self, 
                                     pdatabase=self.database, 
                                     papplication_folder=self.application_folder,
-                                    pid=event_ident)
+                                    pid=None)
         window.show()
 
 

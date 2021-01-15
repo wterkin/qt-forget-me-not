@@ -126,6 +126,7 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def update(self):
         """Обновляет содержимое браузера."""
+        self.textBrowser.clear()
         self.__display_content(self.__load_data())
         
 

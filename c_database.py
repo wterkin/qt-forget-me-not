@@ -470,6 +470,7 @@ class CDatabase(object):
         query = self.session.query(c_event.CEvent.id, c_event.CEvent.fname, c_eventtype.CEventType.fname)
         query = query.join(c_eventtype.CEventType)
         query = query.filter(c_event.CEvent.fstatus>0) 
+        query = query.order_by(c_eventtype.CEventType.fname, c_event.CEvent.fname)
         query = query.all()
         for event_id, event_name, event_type_name in query:
             

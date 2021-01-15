@@ -31,7 +31,7 @@ class CEventEditor(QtWidgets.QMainWindow):
     
     def __accept(self):
         """Обработчик нажатия на клавишу 'Принять'."""
-        self.save_data()
+        self.__save_data()
         self.close()
 
         
