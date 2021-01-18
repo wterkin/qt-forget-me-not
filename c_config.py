@@ -30,10 +30,12 @@ class CConfiguration(object):
         
             self.store_value(DATABASE_FILE_KEY, 
                              str(Path.home() / CONFIG_FOLDER / DATABASE_FILE_NAME))
+            self.write_config()
         if not MONITORING_PERIOD_KEY in self.config:
         
-            self.store_value(MONITORING_PERIOD_KEY,  14)
-
+            self.store_value(MONITORING_PERIOD_KEY,  21)
+            self.write_config()
+            
     
     def store_value(self, pkey, pvalue):
         """Сохраняет заданное значение по заданному ключу в словарь конфигурации."""

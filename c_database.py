@@ -202,10 +202,10 @@ class CDatabase(object):
             
             # *** И от нач. года до даты по 
             next_year_date_from = this_year_date_to + dtime.timedelta(days=1)
-            queried_data1=self.universal_query(date_from.day, date_from.month, this_year_date_to.day, this_year_date_to.month, const.EVENT_YEAR_PERIOD, QUERY_YEARLY_DATA)
+            queried_data1 = self.universal_query(date_from.day, date_from.month, this_year_date_to.day, this_year_date_to.month, const.EVENT_YEAR_PERIOD, QUERY_YEARLY_DATA)
             queried_data1 = self.convert_one_shot_tuple(queried_data1)
             # Вторая выборка
-            queried_data2=self.universal_query(next_year_date_from.day, next_year_date_from.month, date_to.day, date_to.month, const.EVENT_YEAR_PERIOD, QUERY_YEARLY_DATA)
+            queried_data2 = self.universal_query(next_year_date_from.day, next_year_date_from.month, date_to.day, date_to.month, const.EVENT_YEAR_PERIOD, QUERY_YEARLY_DATA)
             queried_data2 = self.convert_one_shot_tuple(queried_data2)
             # *** Сливаем обе выборки
             queried_data1.extend(queried_data2)
@@ -266,11 +266,13 @@ class CDatabase(object):
             this_month_date_to = dtime.datetime(date_from.year, date_from.month, last_day)
             # *** И от нач. м-ца до даты по 
             next_month_date_from = this_month_date_to + dtime.timedelta(days=1)
+            print("*** DB:GAY:dt ", date_from, this_month_date_to)
             queried_data1 = self.universal_query(date_from.day, date_from.month, this_month_date_to.day, this_month_date_to.month, const.EVENT_YEAR_PERIOD, QUERY_YEARLY_DATA)
             queried_data1 = self.convert_yearly_tuple(queried_data1, date_from)
-           
+            print("*** DB:GAY:dt ", next_month_date_from, date_to)
             queried_data2 = self.universal_query(next_month_date_from.day, next_month_date_from.month, date_to.day, date_to.month, const.EVENT_YEAR_PERIOD, QUERY_YEARLY_DATA)
             queried_data2 = self.convert_yearly_tuple(queried_data2, next_month_date_from)
+            
             queried_data1.extend(queried_data2)
             return queried_data1
 
