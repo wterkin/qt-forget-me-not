@@ -105,12 +105,16 @@ class CMainWindow(QtWidgets.QMainWindow):
 
         full_data = []
         db_month_data = self.database.get_actual_monthly_events()
+        #print("*** MN:LD:mnt ", db_month_data)
         full_data.extend(db_month_data)
         db_year_data = self.database.get_actual_yearly_events()
+        #print("*** MN:LD:yr ", db_year_data)
         full_data.extend(db_year_data)
         db_one_shot_data = self.database.get_actual_one_shot_events()
+        #print("*** MN:LD:os ", db_one_shot_data)
         full_data.extend(db_one_shot_data)
         sorted_data = sorted(full_data, key=sort_list)
+        print(sorted_data)
         return(sorted_data)
 
 
