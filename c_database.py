@@ -33,7 +33,7 @@ EVENT_LIST_CONVERTED_TYPE_NAME_FIELD = 3
 EVENT_LIST_CONVERTED_TYPE_COLOR_FIELD = 4
 EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD = 5
 EVENT_LIST_CONVERTED_DATE_FIELD = 6
-EVENT_LIST_CONVERTED_MESSAGE_FIELD = 6
+EVENT_LIST_CONVERTED_MESSAGE_FIELD = 7
 
 EVENT_TYPE_MEMORY_DAY = 1
 EVENT_TYPE_BIRTH_DAY = 2
@@ -71,6 +71,7 @@ class CDatabase(object):
             event_list.pop(EVENT_LIST_MONTH_FIELD)
             event_list.pop(EVENT_LIST_DAY_FIELD)
             event_list.append(event_date)
+            event_list.append("")
             # print("$$$$ ", event_list)
             event_super_list.append(event_list)
         return event_super_list    
@@ -89,6 +90,7 @@ class CDatabase(object):
             event_list.pop(EVENT_LIST_MONTH_FIELD)
             event_list.pop(EVENT_LIST_DAY_FIELD)
             event_list.append(event_date)
+            event_list.append("")
             # print("@@@@@ ", event_list)
             event_super_list.append(event_list)
         return event_super_list    
@@ -100,25 +102,24 @@ class CDatabase(object):
         for event_tuple in pevent_super_tuple:
 
             event_list = list(event_tuple)
-            event_list[EVENT_LIST_YEAR_FIELD] = pnew_date.year
             person_age = dt.now().year - event_list[EVENT_LIST_YEAR_FIELD]
+            event_list[EVENT_LIST_YEAR_FIELD] = pnew_date.year
             one_digit = person_age % 10
             message = ""
-            if event_list[EVENT_LIST_TYPE_NAME_FIELD] == EVENT_TYPE_MEMORY_DAY:
+            if event_list[EVENT_LIST_CONVERTED_TYPE_ID_FIELD] == EVENT_TYPE_MEMORY_DAY:
             
                 message = f"{person_age}-я годовщина"
-            elif event_list[EVENT_LIST_TYPE_NAME_FIELD] == EVENT_TYPE_BIRTH_DAY:
-            
-                if one_digit in (0, 5, 6, 7, 8, 9):
+            elif event_list[EVENT_LIST_CONVERTED_TYPE_ID_FIELD] == EVENT_TYPE_BIRTH_DAY:
+                
+                if (one_digit == 0) or (one_digit >= 5):
                     
                     message = f"{person_age} лет"
                 elif one_digit == 1:
                     
                     message = f"{person_age} год"
-                elif one_digit in (2, 3, 4):
+                elif (one_digit >= 2) or (one_digit <= 4):
                     
                     message = f"{person_age} года"
-
             
             event_date = dtime.date(event_list[EVENT_LIST_YEAR_FIELD], 
                                     event_list[EVENT_LIST_MONTH_FIELD], 
@@ -128,7 +129,6 @@ class CDatabase(object):
             event_list.pop(EVENT_LIST_DAY_FIELD)
             event_list.append(event_date)
             event_list.append(message)
-            # print("##### ", event_list)
             event_super_list.append(event_list)
         return event_super_list    
 

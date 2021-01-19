@@ -101,13 +101,17 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def __make_html_row(self, data_row):
         """Создает строку HTML с заданными параметрами."""
+        print("*** MN:MHR:dat ", data_row)
         type_id = data_row[db.EVENT_LIST_CONVERTED_TYPE_ID_FIELD]
         emodji = data_row[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD]
         type_name = data_row[db.EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]
         event_date = data_row[db.EVENT_LIST_CONVERTED_DATE_FIELD]
         event_name = data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD]
-        message = data_row[db.EVENT_LIST_CONVERTED_MESSAGE_FIELD]
-        return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} ({message})</td></tr>\n"
+        if (type_id == db.EVENT_TYPE_MEMORY_DAY) or (type_id == db.EVENT_TYPE_BIRTH_DAY) :
+            message = data_row[db.EVENT_LIST_CONVERTED_MESSAGE_FIELD]
+            return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} ({message})</td></tr>\n"
+        return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name}</td></tr>\n"
+            
 
 
     def update(self):
