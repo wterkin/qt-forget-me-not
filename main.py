@@ -106,7 +106,8 @@ class CMainWindow(QtWidgets.QMainWindow):
         type_name = data_row[db.EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]
         event_date = data_row[db.EVENT_LIST_CONVERTED_DATE_FIELD]
         event_name = data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD]
-        return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} </td></tr>\n"
+        message = data_row[db.EVENT_LIST_CONVERTED_MESSAGE_FIELD]
+        return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} ({message})</td></tr>\n"
 
 
     def update(self):

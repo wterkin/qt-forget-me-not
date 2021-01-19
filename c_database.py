@@ -33,6 +33,10 @@ EVENT_LIST_CONVERTED_TYPE_NAME_FIELD = 3
 EVENT_LIST_CONVERTED_TYPE_COLOR_FIELD = 4
 EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD = 5
 EVENT_LIST_CONVERTED_DATE_FIELD = 6
+EVENT_LIST_CONVERTED_MESSAGE_FIELD = 6
+
+EVENT_TYPE_MEMORY_DAY = 1
+EVENT_TYPE_BIRTH_DAY = 2
 
 QUERY_MONTHLY_DATA = 0
 QUERY_YEARLY_DATA = 1
@@ -97,6 +101,25 @@ class CDatabase(object):
 
             event_list = list(event_tuple)
             event_list[EVENT_LIST_YEAR_FIELD] = pnew_date.year
+            person_age = dt.now().year - event_list[EVENT_LIST_YEAR_FIELD]
+            one_digit = person_age % 10
+            message = ""
+            if event_list[EVENT_LIST_TYPE_NAME_FIELD] == EVENT_TYPE_MEMORY_DAY:
+            
+                message = f"{person_age}-я годовщина"
+            elif event_list[EVENT_LIST_TYPE_NAME_FIELD] == EVENT_TYPE_BIRTH_DAY:
+            
+                if one_digit in (0, 5, 6, 7, 8, 9):
+                    
+                    message = f"{person_age} лет"
+                elif one_digit == 1:
+                    
+                    message = f"{person_age} год"
+                elif one_digit in (2, 3, 4):
+                    
+                    message = f"{person_age} года"
+
+            
             event_date = dtime.date(event_list[EVENT_LIST_YEAR_FIELD], 
                                     event_list[EVENT_LIST_MONTH_FIELD], 
                                     event_list[EVENT_LIST_DAY_FIELD])
@@ -104,6 +127,7 @@ class CDatabase(object):
             event_list.pop(EVENT_LIST_MONTH_FIELD)
             event_list.pop(EVENT_LIST_DAY_FIELD)
             event_list.append(event_date)
+            event_list.append(message)
             # print("##### ", event_list)
             event_super_list.append(event_list)
         return event_super_list    
@@ -266,10 +290,10 @@ class CDatabase(object):
             this_month_date_to = dtime.datetime(date_from.year, date_from.month, last_day)
             # *** И от нач. м-ца до даты по 
             next_month_date_from = this_month_date_to + dtime.timedelta(days=1)
-            print("*** DB:GAY:dt ", date_from, this_month_date_to)
+            # print("*** DB:GAY:dt ", date_from, this_month_date_to)
             queried_data1 = self.universal_query(date_from.day, date_from.month, this_month_date_to.day, this_month_date_to.month, const.EVENT_YEAR_PERIOD, QUERY_YEARLY_DATA)
             queried_data1 = self.convert_yearly_tuple(queried_data1, date_from)
-            print("*** DB:GAY:dt ", next_month_date_from, date_to)
+            # print("*** DB:GAY:dt ", next_month_date_from, date_to)
             queried_data2 = self.universal_query(next_month_date_from.day, next_month_date_from.month, date_to.day, date_to.month, const.EVENT_YEAR_PERIOD, QUERY_YEARLY_DATA)
             queried_data2 = self.convert_yearly_tuple(queried_data2, next_month_date_from)
             
