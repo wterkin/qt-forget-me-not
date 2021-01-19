@@ -37,14 +37,11 @@ class CEventList(QtWidgets.QMainWindow):
 
     def __delete_event(self):
         """Удаляет выбранное событие."""
-        #selected_items = self.events_box.curselection()
-        #if len(selected_items) > 0:
-
-            #event_ident = self.event_id_list[selected_items[0]]
-            #self.database.update_event(event_ident)
-            #self.load_data()
-        pass
-    
+        selected_item = self.listWidget.currentRow()
+        event_ident = self.event_id_list[selected_item]
+        self.database.delete_event(event_ident)
+        self.update()
+        
     
     def __insert_event(self):
         """Добавляет новое событие в базу."""
