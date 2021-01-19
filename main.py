@@ -12,11 +12,10 @@ import c_config as cfg
 import c_constants as const
 import c_database as db
 import c_eventlist as evlst
+import c_tools as tls
 
 # ToDo: Ежедневный и еженедельный бэкап базы
 # ToDo: При каждом запуске удалять просроченные единоразовые события
-# ToDo: Выделять сегодняшние события
-# ToDo: Выводить возраст для дней рождений.
 
 class CMainWindow(QtWidgets.QMainWindow):
     """Класс."""
@@ -101,16 +100,33 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def __make_html_row(self, data_row):
         """Создает строку HTML с заданными параметрами."""
-        print("*** MN:MHR:dat ", data_row)
+        # prin("*** MN:MHR:dat ", data_row)
         type_id = data_row[db.EVENT_LIST_CONVERTED_TYPE_ID_FIELD]
         emodji = data_row[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD]
         type_name = data_row[db.EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]
         event_date = data_row[db.EVENT_LIST_CONVERTED_DATE_FIELD]
         event_name = data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD]
+        color_mark = None
+        if event_date == datetime.now().date():
+
+            color_mark = self.config.restore_value(cfg.TODAY_COLOR_KEY)
+            print("*** MN:MHR:cm1 ", color_mark)
+        if event_date == tls.shift_date(datetime.now(), -1):
+
+            color_mark = self.config.restore_value(cfg.YESTERDAY_COLOR_KEY)
+            print("*** MN:MHR:cm2 ", color_mark)
+        if color_mark:
+
+            html_row = f"<tr><td> <font color='{color_mark}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
+        else:
+        
+            html_row = f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
+        
         if (type_id == db.EVENT_TYPE_MEMORY_DAY) or (type_id == db.EVENT_TYPE_BIRTH_DAY) :
-            message = data_row[db.EVENT_LIST_CONVERTED_MESSAGE_FIELD]
-            return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} ({message})</td></tr>\n"
-        return f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name}</td></tr>\n"
+            html_row += data_row[db.EVENT_LIST_CONVERTED_MESSAGE_FIELD]
+        html_row += "</td></tr>\n"
+       
+        return html_row
             
 
 

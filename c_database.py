@@ -67,6 +67,15 @@ class CDatabase(object):
             event_date = dtime.date(event_list[EVENT_LIST_YEAR_FIELD], 
                                     event_list[EVENT_LIST_MONTH_FIELD], 
                                     event_list[EVENT_LIST_DAY_FIELD])
+            # *** Если дата совпадает с сегодняшней или вчерашней - заменяем цвет.
+            # print("*** CMT:evd-now ", event_date, dt.now().date())
+            # if event_date == dt.now().date():
+
+                # event_list[EVENT_LIST_TYPE_COLOR_FIELD] = self.config.restore_value(c_config.TODAY_COLOR_KEY)
+            # if event_date == tls.shift_date(dt.now(), -1):
+
+                # event_list[EVENT_LIST_TYPE_COLOR_FIELD] = self.config.restore_value(c_config.YESTERDAY_COLOR_KEY)
+                
             event_list.pop(EVENT_LIST_YEAR_FIELD)
             event_list.pop(EVENT_LIST_MONTH_FIELD)
             event_list.pop(EVENT_LIST_DAY_FIELD)
@@ -86,6 +95,13 @@ class CDatabase(object):
             event_date = dtime.date(event_list[EVENT_LIST_YEAR_FIELD], 
                                     event_list[EVENT_LIST_MONTH_FIELD], 
                                     event_list[EVENT_LIST_DAY_FIELD])
+            # *** Если дата совпадает с сегодняшней или вчерашней - заменяем цвет.
+            if event_date == dt.now():
+
+                event_list[EVENT_LIST_TYPE_COLOR_FIELD] = self.config.restore_value(c_config.TODAY_COLOR_KEY)
+            if event_date == tls.shift_date(dt.now(), -1):
+
+                event_list[EVENT_LIST_TYPE_COLOR_FIELD] = self.config.restore_value(c_config.YESTERDAY_COLOR_KEY)
             event_list.pop(EVENT_LIST_YEAR_FIELD)
             event_list.pop(EVENT_LIST_MONTH_FIELD)
             event_list.pop(EVENT_LIST_DAY_FIELD)
@@ -99,36 +115,52 @@ class CDatabase(object):
     def convert_yearly_tuple(self, pevent_super_tuple, pnew_date):
         """Конвертирует кортеж в список, подставляя значения года и месяца из даты."""
         event_super_list = []
+        # *** Перебираем события в списке
         for event_tuple in pevent_super_tuple:
 
             event_list = list(event_tuple)
-            person_age = dt.now().year - event_list[EVENT_LIST_YEAR_FIELD]
-            event_list[EVENT_LIST_YEAR_FIELD] = pnew_date.year
-            one_digit = person_age % 10
+            # *** Вычислим возраст события
+            event_age = dt.now().year - event_list[EVENT_LIST_YEAR_FIELD]
+            one_digit = event_age % 10
             message = ""
-            if event_list[EVENT_LIST_CONVERTED_TYPE_ID_FIELD] == EVENT_TYPE_MEMORY_DAY:
+            # *** Поменяем год в списке на текущий
+            event_list[EVENT_LIST_YEAR_FIELD] = pnew_date.year
+            if event_list[EVENT_LIST_TYPE_ID_FIELD] == EVENT_TYPE_MEMORY_DAY:
             
-                message = f"{person_age}-я годовщина"
-            elif event_list[EVENT_LIST_CONVERTED_TYPE_ID_FIELD] == EVENT_TYPE_BIRTH_DAY:
+                # *** Для дня памяти всё просто...
+                message = f"{event_age}-я годовщина"
+            elif event_list[EVENT_LIST_TYPE_ID_FIELD] == EVENT_TYPE_BIRTH_DAY:
                 
+                # *** Для дня рождения всё сложнее...
                 if (one_digit == 0) or (one_digit >= 5):
                     
-                    message = f"{person_age} лет"
+                    message = f"{event_age} лет"
                 elif one_digit == 1:
                     
-                    message = f"{person_age} год"
+                    message = f"{event_age} год"
                 elif (one_digit >= 2) or (one_digit <= 4):
                     
-                    message = f"{person_age} года"
+                    message = f"{event_age} года"
             
+            # *** Собираем дату события из года, месяца и дня
             event_date = dtime.date(event_list[EVENT_LIST_YEAR_FIELD], 
                                     event_list[EVENT_LIST_MONTH_FIELD], 
                                     event_list[EVENT_LIST_DAY_FIELD])
+            # *** Если дата совпадает с сегодняшней или вчерашней - заменяем цвет.
+            if event_date == dt.now():
+
+                event_list[EVENT_LIST_TYPE_COLOR_FIELD] = self.config.restore_value(c_config.TODAY_COLOR_KEY)
+            if event_date == tls.shift_date(dt.now(), -1):
+
+                event_list[EVENT_LIST_TYPE_COLOR_FIELD] = self.config.restore_value(c_config.YESTERDAY_COLOR_KEY)
+            # *** Удаляем из списка год, месяц и день
             event_list.pop(EVENT_LIST_YEAR_FIELD)
             event_list.pop(EVENT_LIST_MONTH_FIELD)
             event_list.pop(EVENT_LIST_DAY_FIELD)
+            # *** Добавляем дату и сообщение
             event_list.append(event_date)
             event_list.append(message)
+            # *** Закидываем событие в список событий
             event_super_list.append(event_list)
         return event_super_list    
 
@@ -180,7 +212,8 @@ class CDatabase(object):
     def get_actual_monthly_events(self):
         """Возвращает список ежемесячных событий, актуальных в периоде от текущей даты до текущей + период видимости."""
         # *** Дата c = текущая дата 
-        date_from = dt.now().date()
+        # date_from = dt.now().date()
+        date_from = tls.shift_date(dt.now().date(), -1)
         # *** Дата по = Дата с + период видимости
         date_to =  date_from + dtime.timedelta(days=int(self.config.restore_value(c_config.MONITORING_PERIOD_KEY)))
         # *** Если дата по в следующем месяце
@@ -215,7 +248,8 @@ class CDatabase(object):
     def get_actual_one_shot_events(self):
         """Возвращает список одноразовых событий, актуальных в периоде от текущей даты до текущей + период видимости."""
         # *** Дата с..
-        date_from = dt.now().date()
+        # date_from = dt.now().date()
+        date_from = tls.shift_date(dt.now().date(), -1)
         # *** Дата по..
         date_to =  date_from + dtime.timedelta(days=int(self.config.restore_value(c_config.MONITORING_PERIOD_KEY)))
         # *** Если дата по в следующем году разделяем период на два отрезка - от текущей даты до конца года
@@ -256,7 +290,7 @@ class CDatabase(object):
     def get_actual_yearly_events(self):
         """Возвращает список ежегодных событий, актуальных в периоде от текущей даты до текущей + период видимости."""
         # *** Дата с..
-        date_from = dt.now().date()
+        date_from = tls.shift_date(dt.now().date(), -1)
         # *** Дата по..
         date_to = date_from + dtime.timedelta(days=int(self.config.restore_value(c_config.MONITORING_PERIOD_KEY)))
         # print("*** DB:GAY:1")
