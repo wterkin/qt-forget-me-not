@@ -4,9 +4,8 @@
 import sys
 from pathlib import Path
 from datetime import datetime
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from PyQt5 import uic
-
 
 import c_config as cfg
 import c_constants as const
@@ -24,6 +23,9 @@ class CMainWindow(QtWidgets.QMainWindow):
         super(CMainWindow, self).__init__()
         self.application_folder = Path.cwd()
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.MAIN_WINDOW_FORM, self)
+        text_font = QtGui.QFont()
+        text_font.setPointSize(text_font.pointSize()+3)
+        self.textBrowser.setFont(text_font)        
         self.actionEventsList.triggered.connect(self.__event_list_show)
 
         self.config = cfg.CConfiguration()
@@ -36,6 +38,16 @@ class CMainWindow(QtWidgets.QMainWindow):
         self.show()
 
     
+    def cleanup(self):
+        """Удаляет одноразовые устаревшие события."""
+        date_passed = tls.shift_date(datetime.now(), -2)
+        queried_data = self.session.query(c_event.CEvent)
+        queried_data = queried_data.filter(c_event.CEvent.fperiod==3, 
+                                           and_(c_event.CEvent.fday<=date_passed.day,
+                                           and_(c_event.CEvent.fmonth<=date_passed.month,
+                                           and_(c_event.CEvent.fyear<=date_passed.year
+                                           )))))
+
     def __display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
         # *** Формируем таблицу стилей страницы
@@ -95,12 +107,12 @@ class CMainWindow(QtWidgets.QMainWindow):
         db_one_shot_data = self.database.get_actual_one_shot_events()
         full_data.extend(db_one_shot_data)
         sorted_data = sorted(full_data, key=sort_list)
+        sorted_data.reverse()
         return(sorted_data)
 
 
     def __make_html_row(self, data_row):
         """Создает строку HTML с заданными параметрами."""
-        # prin("*** MN:MHR:dat ", data_row)
         type_id = data_row[db.EVENT_LIST_CONVERTED_TYPE_ID_FIELD]
         emodji = data_row[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD]
         type_name = data_row[db.EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]
@@ -110,11 +122,9 @@ class CMainWindow(QtWidgets.QMainWindow):
         if event_date == datetime.now().date():
 
             color_mark = self.config.restore_value(cfg.TODAY_COLOR_KEY)
-            print("*** MN:MHR:cm1 ", color_mark)
         if event_date == tls.shift_date(datetime.now(), -1):
 
             color_mark = self.config.restore_value(cfg.YESTERDAY_COLOR_KEY)
-            print("*** MN:MHR:cm2 ", color_mark)
         if color_mark:
 
             html_row = f"<tr><td> <font color='{color_mark}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
@@ -123,12 +133,11 @@ class CMainWindow(QtWidgets.QMainWindow):
             html_row = f"<tr><td class='style_{type_id}'>{emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
         
         if (type_id == db.EVENT_TYPE_MEMORY_DAY) or (type_id == db.EVENT_TYPE_BIRTH_DAY) :
+        
             html_row += data_row[db.EVENT_LIST_CONVERTED_MESSAGE_FIELD]
         html_row += "</td></tr>\n"
-       
         return html_row
             
-
 
     def update(self):
         """Обновляет содержимое браузера."""

@@ -128,19 +128,19 @@ class CDatabase(object):
             if event_list[EVENT_LIST_TYPE_ID_FIELD] == EVENT_TYPE_MEMORY_DAY:
             
                 # *** Для дня памяти всё просто...
-                message = f"{event_age}-я годовщина"
+                message = f"({event_age}-я годовщина)"
             elif event_list[EVENT_LIST_TYPE_ID_FIELD] == EVENT_TYPE_BIRTH_DAY:
                 
                 # *** Для дня рождения всё сложнее...
                 if (one_digit == 0) or (one_digit >= 5):
                     
-                    message = f"{event_age} лет"
+                    message = f"({event_age} лет)"
                 elif one_digit == 1:
                     
-                    message = f"{event_age} год"
+                    message = f"({event_age} год)"
                 elif (one_digit >= 2) or (one_digit <= 4):
                     
-                    message = f"{event_age} года"
+                    message = f"({event_age} года)"
             
             # *** Собираем дату события из года, месяца и дня
             event_date = dtime.date(event_list[EVENT_LIST_YEAR_FIELD], 
