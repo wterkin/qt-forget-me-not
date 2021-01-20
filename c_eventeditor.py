@@ -20,6 +20,7 @@ class CEventEditor(QtWidgets.QMainWindow):
         self.id = pid
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_EDITOR_FORM, self)
         # *** Загрузим список типов событий
+        self.dateEdit_EventDate.setDate(QtCore.QDate(datetime.now()))
         self.toolButton_Accept.clicked.connect(self.__accept)
         self.toolButton_Recalc.clicked.connect(self.__recalc)
         self.__load_event_types_list()
