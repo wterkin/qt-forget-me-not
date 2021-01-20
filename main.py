@@ -151,14 +151,21 @@ class CMainWindow(QtWidgets.QMainWindow):
                                                               directory=str(db_path),
                                                               filter="forget-me-not*.db"
                                                              )
-        print("*** MN:OD:sf ", selected_file[0])
+        # print("*** MN:OD:sf ", selected_file[0])
         result = QtWidgets.QMessageBox.question(self,
                                                 "Подтверждение",
                                                 "Вы действительно хотите использовать эту базу данных?",
                                                 buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                                 defaultButton=QtWidgets.QMessageBox.No                            
                                                 )
-        print("*** MN:OD:res ", result==QtWidgets.QMessageBox.Yes)
+        # print("*** MN:OD:res ", result==QtWidgets.QMessageBox.Yes)
+        if result==QtWidgets.QMessageBox.Yes:
+            
+            self.config.store_value(cfg.DATABASE_FILE_KEY, selected_file[0])
+            self.config.write_config()
+            self.database.disconnect_from_database()
+            self.database.connect_to_database()
+            self.update()
     
     def update(self):
         """Обновляет содержимое браузера."""

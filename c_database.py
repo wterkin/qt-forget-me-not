@@ -46,15 +46,16 @@ class CDatabase(object):
     def __init__(self, pconfig):
         """Конструктор."""
         self.config = pconfig
+        self.connect_to_database()
+
+    def connect_to_database(self):
+        """Открывает соединение с БД."""
         self.engine = create_engine('sqlite:///'+self.config.restore_value(c_config.DATABASE_FILE_KEY))
         Session = sessionmaker()
         Session.configure(bind=self.engine)
         self.session = Session()
         c_ancestor.Base.metadata.bind = self.engine
 
-
-    def connect_to_database():
-        """Открывает соединение с БД."""
 
     def convert_monthly_tuple(self, pevent_super_tuple, pnew_date):
         """Конвертирует кортеж в список, подставляя значения года и месяца из даты."""
@@ -184,6 +185,12 @@ class CDatabase(object):
         event_data.update({c_event.CEvent.fstatus:STATUS_INACTIVE}, synchronize_session = False)
         self.session.commit()
 
+
+    def disconnect_from_database(self):
+        """Разрывает соединение с БД."""
+        self.session.close()
+        self.engine.dispose()
+        
 
     def fill_event_types_table(self):
         """Заполняет пустую таблицу справочника типов событий значениями."""
