@@ -53,6 +53,9 @@ class CDatabase(object):
         c_ancestor.Base.metadata.bind = self.engine
 
 
+    def connect_to_database():
+        """Открывает соединение с БД."""
+
     def convert_monthly_tuple(self, pevent_super_tuple, pnew_date):
         """Конвертирует кортеж в список, подставляя значения года и месяца из даты."""
         event_super_list = []
