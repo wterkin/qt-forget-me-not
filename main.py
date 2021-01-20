@@ -95,6 +95,7 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def __load_data(self):
         """Получает список событий за интервал, определенный в конфиге."""
+
         def sort_list(x):
             
             # delta=x[db.EVENT_LIST_CONVERTED_DATE_FIELD]-datetime.now().date()
@@ -121,10 +122,11 @@ class CMainWindow(QtWidgets.QMainWindow):
         event_date = data_row[db.EVENT_LIST_CONVERTED_DATE_FIELD]
         event_name = data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD]
         color_mark = None
+        # print("*** MN:MHR:dts ", event_date, tls.shift_date(datetime.now(), -1))
         if event_date == datetime.now().date():
 
             color_mark = self.config.restore_value(cfg.TODAY_COLOR_KEY)
-        if event_date == tls.shift_date(datetime.now(), -1):
+        if event_date == tls.shift_date(datetime.now(), -1).date():
 
             color_mark = self.config.restore_value(cfg.YESTERDAY_COLOR_KEY)
         if color_mark:
