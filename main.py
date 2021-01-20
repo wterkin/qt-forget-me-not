@@ -47,7 +47,7 @@ class CMainWindow(QtWidgets.QMainWindow):
                                            and_(c_event.CEvent.fday<=date_passed.day,
                                            and_(c_event.CEvent.fmonth<=date_passed.month,
                                            and_(c_event.CEvent.fyear<=date_passed.year
-                                           )))))
+                                           ))))
 
     def __display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
@@ -97,7 +97,8 @@ class CMainWindow(QtWidgets.QMainWindow):
         """Получает список событий за интервал, определенный в конфиге."""
         def sort_list(x):
             
-            delta=x[db.EVENT_LIST_CONVERTED_DATE_FIELD]-datetime.now().date()
+            # delta=x[db.EVENT_LIST_CONVERTED_DATE_FIELD]-datetime.now().date()
+            delta=datetime.now().date() - x[db.EVENT_LIST_CONVERTED_DATE_FIELD]
             return delta.days
 
         full_data = []
@@ -108,7 +109,7 @@ class CMainWindow(QtWidgets.QMainWindow):
         db_one_shot_data = self.database.get_actual_one_shot_events()
         full_data.extend(db_one_shot_data)
         sorted_data = sorted(full_data, key=sort_list)
-        sorted_data.reverse()
+        #sorted_data.reverse()
         return(sorted_data)
 
 
