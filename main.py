@@ -28,7 +28,7 @@ class CMainWindow(QtWidgets.QMainWindow):
         text_font.setPointSize(text_font.pointSize()+3)
         self.textBrowser.setFont(text_font)        
         self.actionEventsList.triggered.connect(self.__event_list_show)
-
+        self.actionOpenDatabase.triggered.connect(self.__open_database)
         self.config = cfg.CConfiguration()
         
         self.database = db.CDatabase(self.config)
@@ -142,6 +142,14 @@ class CMainWindow(QtWidgets.QMainWindow):
         html_row += "</td></tr>\n"
         return html_row
             
+
+    def __open_database(self):
+        """Открывает базу данных и запоминает ее, как базу по умолчанию."""
+        db_path = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY)).parent
+        print(str(db_path.absolute()))
+        
+        # dialog = QFileDialog(self, )
+        pass
 
     def update(self):
         """Обновляет содержимое браузера."""

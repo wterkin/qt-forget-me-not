@@ -34,6 +34,8 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionOpenDatabase"/>
+   <addaction name="separator"/>
    <addaction name="actionEventsList"/>
    <addaction name="separator"/>
    <addaction name="actionExit"/>
@@ -67,6 +69,18 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionOpenDatabase">
+   <property name="icon">
+    <iconset>
+     <normaloff>document-open-folder.png</normaloff>document-open-folder.png</iconset>
+   </property>
+   <property name="text">
+    <string>Открыть базу</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+O</string>
    </property>
   </action>
  </widget>
