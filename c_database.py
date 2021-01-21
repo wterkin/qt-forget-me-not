@@ -48,6 +48,32 @@ class CDatabase(object):
         self.config = pconfig
         self.connect_to_database()
 
+
+    def cleanup(self):
+        """Удаляет одноразовые устаревшие события."""
+        date_passed = tls.shift_date(dt.now(), -2)
+        queried_data = self.session.query(c_event.CEvent.id)
+        queried_data = queried_data.filter(c_event.CEvent.fperiod==const.EVENT_ONE_SHOT)
+        queried_data = queried_data.filter(c_event.CEvent.fstatus>STATUS_INACTIVE)
+        # queried_data = queried_data.filter(c_event.CEvent.fyear<date_passed.year)    
+        # queried_data = queried_data.filter(or_(c_event.CEvent.fyear==date_passed.year,
+                                               # and_(c_event.CEvent.fmonth<=date_passed.month,
+                                               # and_(c_event.CEvent.fday<=date_passed.day))))
+        queried_data = queried_data.filter(c_event.CEvent.fyear<date_passed.year,
+                                           or_(c_event.CEvent.fyear==date_passed.year,
+                                           and_(c_event.CEvent.fmonth<=date_passed.month,
+                                           and_(c_event.CEvent.fday<=date_passed.day))))
+                                           # and_(
+                                           # )))
+        # FixMe: Вот тут неправильно.
+        for event_id in queried_data.all():
+            
+            print("*** DB:CLN:id ", event_id)
+            event_query = self.session.query(c_event.CEvent).filter_by(id=event_id[0])
+            event_query.update({c_event.CEvent.fstatus:STATUS_INACTIVE}, synchronize_session = False)
+            self.session.commit()
+
+
     def connect_to_database(self):
         """Открывает соединение с БД."""
         self.engine = create_engine('sqlite:///'+self.config.restore_value(c_config.DATABASE_FILE_KEY))

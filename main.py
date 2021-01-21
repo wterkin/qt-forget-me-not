@@ -15,7 +15,6 @@ import c_tools as tls
 
 # ToDo: Ежедневный и еженедельный бэкап базы
 # ToDo: При каждом запуске удалять просроченные единоразовые события
-# FixMe: Вроде бы при выборке одноразовых событий нужно проверять еще и год.
 
 class CMainWindow(QtWidgets.QMainWindow):
     """Класс."""
@@ -35,19 +34,10 @@ class CMainWindow(QtWidgets.QMainWindow):
         if not self.__is_database_exists():
         
             self.database.create_database()
+        # self.database.cleanup()
         self.update()
         self.show()
-
-    
-    def cleanup(self):
-        """Удаляет одноразовые устаревшие события."""
-        date_passed = tls.shift_date(datetime.now(), -2)
-        queried_data = self.session.query(c_event.CEvent)
-        queried_data = queried_data.filter(c_event.CEvent.fperiod==3, 
-                                           and_(c_event.CEvent.fday<=date_passed.day,
-                                           and_(c_event.CEvent.fmonth<=date_passed.month,
-                                           and_(c_event.CEvent.fyear<=date_passed.year
-                                           ))))
+  
 
     def __display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
@@ -98,7 +88,6 @@ class CMainWindow(QtWidgets.QMainWindow):
 
         def sort_list(x):
             
-            # delta=x[db.EVENT_LIST_CONVERTED_DATE_FIELD]-datetime.now().date()
             delta=datetime.now().date() - x[db.EVENT_LIST_CONVERTED_DATE_FIELD]
             return delta.days
 
@@ -110,7 +99,6 @@ class CMainWindow(QtWidgets.QMainWindow):
         db_one_shot_data = self.database.get_actual_one_shot_events()
         full_data.extend(db_one_shot_data)
         sorted_data = sorted(full_data, key=sort_list)
-        #sorted_data.reverse()
         return(sorted_data)
 
 
@@ -122,7 +110,6 @@ class CMainWindow(QtWidgets.QMainWindow):
         event_date = data_row[db.EVENT_LIST_CONVERTED_DATE_FIELD]
         event_name = data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD]
         color_mark = None
-        # print("*** MN:MHR:dts ", event_date, tls.shift_date(datetime.now(), -1))
         if event_date == datetime.now().date():
 
             color_mark = self.config.restore_value(cfg.TODAY_COLOR_KEY)
@@ -151,14 +138,12 @@ class CMainWindow(QtWidgets.QMainWindow):
                                                               directory=str(db_path),
                                                               filter="forget-me-not*.db"
                                                              )
-        # print("*** MN:OD:sf ", selected_file[0])
         result = QtWidgets.QMessageBox.question(self,
                                                 "Подтверждение",
                                                 "Вы действительно хотите использовать эту базу данных?",
                                                 buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                                 defaultButton=QtWidgets.QMessageBox.No                            
                                                 )
-        # print("*** MN:OD:res ", result==QtWidgets.QMessageBox.Yes)
         if result==QtWidgets.QMessageBox.Yes:
             
             self.config.store_value(cfg.DATABASE_FILE_KEY, selected_file[0])
@@ -166,6 +151,7 @@ class CMainWindow(QtWidgets.QMainWindow):
             self.database.disconnect_from_database()
             self.database.connect_to_database()
             self.update()
+
     
     def update(self):
         """Обновляет содержимое браузера."""
