@@ -56,8 +56,6 @@ class CEventList(QtWidgets.QMainWindow):
         """Обновляет данные в списке."""
         self.listWidget.clear()
         self.event_id_list, self.event_name_list = self.database.get_events_list()
-        # sorted_data = sorted(full_data, key=sort_list)
-
         for event_name in self.event_name_list:
             self.listWidget.addItem(QtWidgets.QListWidgetItem(event_name))
 

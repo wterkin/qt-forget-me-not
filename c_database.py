@@ -73,7 +73,6 @@ class CDatabase(object):
             event_query.update({c_event.CEvent.fstatus:STATUS_INACTIVE}, synchronize_session = False)
             self.session.commit()
 
-
     def connect_to_database(self):
         """Открывает соединение с БД."""
         self.engine = create_engine('sqlite:///'+self.config.restore_value(c_config.DATABASE_FILE_KEY))
@@ -95,20 +94,11 @@ class CDatabase(object):
                                     event_list[EVENT_LIST_MONTH_FIELD], 
                                     event_list[EVENT_LIST_DAY_FIELD])
             # *** Если дата совпадает с сегодняшней или вчерашней - заменяем цвет.
-            # print("*** CMT:evd-now ", event_date, dt.now().date())
-            # if event_date == dt.now().date():
-
-                # event_list[EVENT_LIST_TYPE_COLOR_FIELD] = self.config.restore_value(c_config.TODAY_COLOR_KEY)
-            # if event_date == tls.shift_date(dt.now(), -1):
-
-                # event_list[EVENT_LIST_TYPE_COLOR_FIELD] = self.config.restore_value(c_config.YESTERDAY_COLOR_KEY)
-                
             event_list.pop(EVENT_LIST_YEAR_FIELD)
             event_list.pop(EVENT_LIST_MONTH_FIELD)
             event_list.pop(EVENT_LIST_DAY_FIELD)
             event_list.append(event_date)
             event_list.append("")
-            # print("$$$$ ", event_list)
             event_super_list.append(event_list)
         return event_super_list    
 
@@ -134,7 +124,6 @@ class CDatabase(object):
             event_list.pop(EVENT_LIST_DAY_FIELD)
             event_list.append(event_date)
             event_list.append("")
-            # print("@@@@@ ", event_list)
             event_super_list.append(event_list)
         return event_super_list    
 
@@ -245,7 +234,6 @@ class CDatabase(object):
     def get_actual_monthly_events(self):
         """Возвращает список ежемесячных событий, актуальных в периоде от текущей даты до текущей + период видимости."""
         # *** Дата c = текущая дата 
-        # date_from = dt.now().date()
         date_from = tls.shift_date(dt.now().date(), -1)
         # *** Дата по = Дата с + период видимости
         date_to =  date_from + dtime.timedelta(days=int(self.config.restore_value(c_config.MONITORING_PERIOD_KEY)))
@@ -261,7 +249,6 @@ class CDatabase(object):
             queried_data1=self.universal_query(date_from.day, 0, 0, this_month_date_to.day, 0, 0, const.EVENT_MONTH_PERIOD)
             # *** Конвертируем кортеж в список и подставляем текущий месяц и год
             queried_data1 = self.convert_monthly_tuple(queried_data1, this_month_date_to)
-            
             # *** Делаем выборку за следующий месяц
             queried_data2 = self.universal_query(next_month_date_from.day, 0, 0, date_to.day, 0, 0, const.EVENT_MONTH_PERIOD)
             # *** Конвертируем кортеж в список и подставляем следующий месяц и год
@@ -281,7 +268,6 @@ class CDatabase(object):
     def get_actual_one_shot_events(self):
         """Возвращает список одноразовых событий, актуальных в периоде от текущей даты до текущей + период видимости."""
         # *** Дата с..
-        # date_from = dt.now().date()
         date_from = tls.shift_date(dt.now().date(), -1)
         # *** Дата по..
         date_to =  date_from + dtime.timedelta(days=int(self.config.restore_value(c_config.MONITORING_PERIOD_KEY)))
@@ -290,7 +276,6 @@ class CDatabase(object):
             
             last_day = tls.get_years_last_date(date_from)
             this_year_date_to = dtime.datetime(date_from.year, date_from.month, last_day)
-            
             # *** И от нач. года до даты по 
             next_year_date_from = this_year_date_to + dtime.timedelta(days=1)
             queried_data1 = self.universal_query(date_from.day, date_from.month, date_from.year, this_year_date_to.day, this_year_date_to.month, this_year_date_to.year, const.EVENT_YEAR_PERIOD)
@@ -333,7 +318,6 @@ class CDatabase(object):
             # *** То разделяем период на два отрезка - от текущей даты до конца года 
             last_day = tls.get_years_last_date(date_from)
             this_year_date_to = dtime.datetime(date_from.year, date_from.month, last_day)
-            
             # и от нач. года до даты по 
             next_year_date_from = this_year_date_to + dtime.timedelta(days=1)
             # *** делаем две выборки
@@ -347,8 +331,6 @@ class CDatabase(object):
             # *** Сливаем обе выборки
             queried_data1.extend(queried_data2)
             return queried_data1
-        # else:
-            
         # *** Если дата по в следующем месяце
         if date_to.month != date_from.month:
         
@@ -357,13 +339,10 @@ class CDatabase(object):
             this_month_date_to = dtime.datetime(date_from.year, date_from.month, last_day)
             # *** И от нач. м-ца до даты по 
             next_month_date_from = this_month_date_to + dtime.timedelta(days=1)
-            # print("*** DB:GAY:dt ", date_from, this_month_date_to)
             queried_data1 = self.universal_query(date_from.day, date_from.month, 0, this_month_date_to.day, this_month_date_to.month, 0, const.EVENT_YEAR_PERIOD)
             queried_data1 = self.convert_yearly_tuple(queried_data1, date_from)
-            # print("*** DB:GAY:dt ", next_month_date_from, date_to)
             queried_data2 = self.universal_query(next_month_date_from.day, next_month_date_from.month, 0, date_to.day, date_to.month, 0, const.EVENT_YEAR_PERIOD)
             queried_data2 = self.convert_yearly_tuple(queried_data2, next_month_date_from)
-            
             queried_data1.extend(queried_data2)
             return queried_data1
 
