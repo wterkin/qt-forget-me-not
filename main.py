@@ -34,7 +34,7 @@ class CMainWindow(QtWidgets.QMainWindow):
         if not self.__is_database_exists():
         
             self.database.create_database()
-        # self.database.cleanup()
+        self.database.cleanup()
         self.update()
         self.show()
   

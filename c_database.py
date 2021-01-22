@@ -52,26 +52,41 @@ class CDatabase(object):
     def cleanup(self):
         """Удаляет одноразовые устаревшие события."""
         date_passed = tls.shift_date(dt.now(), -2)
-        queried_data = self.session.query(c_event.CEvent.id)
-        queried_data = queried_data.filter(c_event.CEvent.fperiod==const.EVENT_ONE_SHOT)
-        queried_data = queried_data.filter(c_event.CEvent.fstatus>STATUS_INACTIVE)
-        # queried_data = queried_data.filter(c_event.CEvent.fyear<date_passed.year)    
-        # queried_data = queried_data.filter(or_(c_event.CEvent.fyear==date_passed.year,
-                                               # and_(c_event.CEvent.fmonth<=date_passed.month,
-                                               # and_(c_event.CEvent.fday<=date_passed.day))))
-        queried_data = queried_data.filter(c_event.CEvent.fyear<date_passed.year,
-                                           or_(c_event.CEvent.fyear==date_passed.year,
-                                           and_(c_event.CEvent.fmonth<=date_passed.month,
-                                           and_(c_event.CEvent.fday<=date_passed.day))))
-                                           # and_(
-                                           # )))
-        # FixMe: Вот тут неправильно.
-        for event_id in queried_data.all():
+        query = self.session.query(c_event.CEvent.id)
+        query = query.filter(c_event.CEvent.fperiod==const.EVENT_ONE_SHOT,
+                             and_(c_event.CEvent.fstatus>STATUS_INACTIVE,
+                             and_(c_event.CEvent.fyear<date_passed.year)))
+        past_year = query.all()
+        # print("*** DB:CLP:yr ", past_year)
+        query = self.session.query(c_event.CEvent.id)
+        query = query.filter(c_event.CEvent.fperiod==const.EVENT_ONE_SHOT,
+                             and_(c_event.CEvent.fstatus>STATUS_INACTIVE,
+                             and_(c_event.CEvent.fyear==date_passed.year,
+                             and_(c_event.CEvent.fmonth<date_passed.month))))
+        past_month = query.all()
+        # print("*** DB:CLP:mn ", past_month)
+        
+        query = self.session.query(c_event.CEvent.id)
+        query = query.filter(c_event.CEvent.fperiod==const.EVENT_ONE_SHOT,
+                             and_(c_event.CEvent.fstatus>STATUS_INACTIVE,
+                             and_(c_event.CEvent.fyear==date_passed.year,
+                             and_(c_event.CEvent.fmonth==date_passed.month,
+                             and_(c_event.CEvent.fday<=date_passed.day)))))
+        past_days = query.all()
+        # print("*** DB:CLP:dy ", past_days)
+       
+        full_list = []
+        full_list.extend(past_year)
+        full_list.extend(past_month)
+        full_list.extend(past_days)
+        
+        for event_id in full_list:
             
             print("*** DB:CLN:id ", event_id)
             event_query = self.session.query(c_event.CEvent).filter_by(id=event_id[0])
             event_query.update({c_event.CEvent.fstatus:STATUS_INACTIVE}, synchronize_session = False)
             self.session.commit()
+
 
     def connect_to_database(self):
         """Открывает соединение с БД."""
