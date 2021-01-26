@@ -38,6 +38,10 @@
    <addaction name="separator"/>
    <addaction name="actionEventsList"/>
    <addaction name="separator"/>
+   <addaction name="actionEventTypes"/>
+   <addaction name="separator"/>
+   <addaction name="actionSetup"/>
+   <addaction name="separator"/>
    <addaction name="actionExit"/>
    <addaction name="separator"/>
   </widget>
@@ -47,7 +51,7 @@
      <normaloff>view-pim-tasks.png</normaloff>view-pim-tasks.png</iconset>
    </property>
    <property name="text">
-    <string>Список событий</string>
+    <string>События</string>
    </property>
    <property name="toolTip">
     <string>Нажмите для просмотра полного списка событий</string>
@@ -77,10 +81,28 @@
      <normaloff>document-open-folder.png</normaloff>document-open-folder.png</iconset>
    </property>
    <property name="text">
-    <string>Открыть базу</string>
+    <string>База</string>
    </property>
    <property name="shortcut">
     <string>Alt+O</string>
+   </property>
+  </action>
+  <action name="actionEventTypes">
+   <property name="icon">
+    <iconset>
+     <normaloff>address-book-new.png</normaloff>address-book-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>Типы событий</string>
+   </property>
+  </action>
+  <action name="actionSetup">
+   <property name="icon">
+    <iconset>
+     <normaloff>application-menu.png</normaloff>application-menu.png</iconset>
+   </property>
+   <property name="text">
+    <string>Настройки</string>
    </property>
   </action>
  </widget>
