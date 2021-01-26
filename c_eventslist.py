@@ -76,4 +76,5 @@ class CEventList(QtWidgets.QMainWindow):
    
     def update(self):
         """Обновляет список событий."""
+        
         self.__load_data()

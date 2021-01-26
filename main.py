@@ -36,10 +36,18 @@ class CMainWindow(QtWidgets.QMainWindow):
         
             self.database.create_database()
         self.database.cleanup()
+        self.backup_need = False
         self.update()
         self.show()
   
 
+    def __backup(self):
+        """Функция осуществляет резервное копирование БД."""
+        self.database.disconnect_from_database()
+        new_filename = f"forget-me-not_{datetime.now():%Y%m%d_%H%M}"
+
+        
+        
     def __display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
         # *** Формируем таблицу стилей страницы
@@ -84,6 +92,7 @@ class CMainWindow(QtWidgets.QMainWindow):
         window = evtypelst.CEventTypesList(pparent=self, 
                                            pdatabase=self.database, 
                                            papplication_folder=self.application_folder)
+
 
     def __is_database_exists(self):
         """Проверяет наличие базы данных по пути в конфигурации."""
@@ -163,11 +172,18 @@ class CMainWindow(QtWidgets.QMainWindow):
             self.database.connect_to_database()
             self.update()
 
-    
+
+    def closeEvent(self, event):
+        """Перехватывает событие закрытия окна."""
+        self.__backup()
+        event.accept()
+
+ 
     def update(self):
         """Обновляет содержимое браузера."""
         self.textBrowser.clear()
         self.__display_content(self.__load_data())
+        self.backup_need = True
         
 
 if __name__ == '__main__':

@@ -22,12 +22,13 @@ class CEventTypesList(QtWidgets.QMainWindow):
         self.update()
         # *** Показываем окно
         self.show()
-
+        
 
     def closeEvent(self, event):
         """Перехватывает событие закрытия окна."""
         self.parent.update()
         event.accept()
+
 
     def __load_data(self):
         """Обновляет данные в списке."""
