@@ -1,7 +1,10 @@
+
 FORMS_FOLDER = "ui/"
 MAIN_WINDOW_FORM = "f_main.ui"
-EVENT_LIST_FORM = "f_eventlist.ui"
+EVENT_LIST_FORM = "f_eventslist.ui"
 EVENT_EDITOR_FORM = "f_eventeditor.ui"
+EVENT_TYPES_LIST_FORM = "f_eventtypeslist.ui"
+
 TYPE_SEPARATOR = " : "
 
 MAIN_WINDOW_TITLE = "Forget-Me-Not version 0.1"

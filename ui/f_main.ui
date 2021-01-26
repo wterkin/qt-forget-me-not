@@ -38,7 +38,7 @@
    <addaction name="separator"/>
    <addaction name="actionEventsList"/>
    <addaction name="separator"/>
-   <addaction name="actionEventTypes"/>
+   <addaction name="actionEventTypesList"/>
    <addaction name="separator"/>
    <addaction name="actionSetup"/>
    <addaction name="separator"/>
@@ -87,7 +87,7 @@
     <string>Alt+O</string>
    </property>
   </action>
-  <action name="actionEventTypes">
+  <action name="actionEventTypesList">
    <property name="icon">
     <iconset>
      <normaloff>address-book-new.png</normaloff>address-book-new.png</iconset>

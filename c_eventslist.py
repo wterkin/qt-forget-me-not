@@ -35,6 +35,7 @@ class CEventList(QtWidgets.QMainWindow):
         self.parent.update()
         event.accept()
 
+
     def __delete_event(self):
         """Удаляет выбранное событие."""
         selected_item = self.listWidget.currentRow()
@@ -57,6 +58,7 @@ class CEventList(QtWidgets.QMainWindow):
         self.listWidget.clear()
         self.event_id_list, self.event_name_list = self.database.get_events_list()
         for event_name in self.event_name_list:
+        
             self.listWidget.addItem(QtWidgets.QListWidgetItem(event_name))
 
 

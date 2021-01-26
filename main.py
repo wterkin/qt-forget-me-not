@@ -10,7 +10,8 @@ from PyQt5 import uic
 import c_config as cfg
 import c_constants as const
 import c_database as db
-import c_eventlist as evlst
+import c_eventslist as evlst
+import c_eventtypeslist as evtypelst
 import c_tools as tls
 
 # ToDo: Ежедневный и еженедельный бэкап базы
@@ -27,6 +28,7 @@ class CMainWindow(QtWidgets.QMainWindow):
         self.textBrowser.setFont(text_font)        
         self.actionEventsList.triggered.connect(self.__event_list_show)
         self.actionOpenDatabase.triggered.connect(self.__open_database)
+        self.actionEventTypesList.triggered.connect(self.__event_type_list_show)
         self.config = cfg.CConfiguration()
         
         self.database = db.CDatabase(self.config)
@@ -75,6 +77,13 @@ class CMainWindow(QtWidgets.QMainWindow):
                                   pdatabase=self.database, 
                                   papplication_folder=self.application_folder)
    
+
+    def __event_type_list_show(self):
+        """Показывает список типов событий."""
+        
+        window = evtypelst.CEventTypesList(pparent=self, 
+                                           pdatabase=self.database, 
+                                           papplication_folder=self.application_folder)
 
     def __is_database_exists(self):
         """Проверяет наличие базы данных по пути в конфигурации."""
