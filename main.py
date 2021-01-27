@@ -126,22 +126,28 @@ class CMainWindow(QtWidgets.QMainWindow):
         type_name = data_row[db.EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]
         event_date = data_row[db.EVENT_LIST_CONVERTED_DATE_FIELD]
         event_name = data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD]
-        color_mark = None
-        time_mark = "▲"  # "👆⬆️" # "🔼" # ▲►▼
-        if event_date == datetime.now().date():
+        if event_date == tls.shift_date(datetime.now(), 1).date():
+            
+            time_mark = "▲"  # "👆⬆️" # "🔼" # ▲►▼
+        elif event_date == datetime.now().date():
 
-            color_mark = self.config.restore_value(cfg.TODAY_COLOR_KEY)
+            # color_mark = self.config.restore_value(cfg.TODAY_COLOR_KEY)
             time_mark = "►"  # "👉➡️" # "▶️" # 
-        if event_date == tls.shift_date(datetime.now(), -1).date():
+        elif event_date == tls.shift_date(datetime.now(), -1).date():
 
-            color_mark = self.config.restore_value(cfg.YESTERDAY_COLOR_KEY)
+            # color_mark = self.config.restore_value(cfg.YESTERDAY_COLOR_KEY)
             time_mark = "▼"  # "👇⬇️" # "🔽" # 
-        if color_mark:
-
-            html_row = f"<tr><td> <font color='{color_mark}'>{time_mark} {emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
         else:
+
+            time_mark = "🕒"
         
-            html_row = f"<tr><td class='style_{type_id}'>{time_mark} {emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
+        # if color_mark:
+
+            # # html_row = f"<tr><td> <font color='{color_mark}'>{time_mark} {emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
+            # html_row = f"<tr><td>{time_mark} {emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
+        # else:
+        
+        html_row = f"<tr><td class='style_{type_id}'>{time_mark} {emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
         
         if (type_id == db.EVENT_TYPE_MEMORY_DAY) or (type_id == db.EVENT_TYPE_BIRTH_DAY) :
         
