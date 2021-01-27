@@ -175,7 +175,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="pushButton_Accept">
         <property name="minimumSize">
          <size>
           <width>111</width>
@@ -214,5 +214,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_Cancel</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>389</x>
+     <y>235</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>273</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

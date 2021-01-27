@@ -216,6 +216,13 @@ class CDatabase(object):
         self.session.commit()
 
 
+    def delete_event_type(self, pid):
+        """Удаляет уже существующее событие в БД."""
+        event_type_data = self.session.query(c_eventtype.CEventType).filter_by(id=pid)
+        event_type_data.update({c_eventtype.CEventType.fstatus:STATUS_INACTIVE}, synchronize_session = False)
+        self.session.commit()
+
+
     def disconnect_from_database(self):
         """Разрывает соединение с БД."""
         self.session.close()
@@ -381,6 +388,18 @@ class CDatabase(object):
                                event_data.fday),
                 event_data.ftype,
                 event_data.fperiod)
+
+
+    def get_event_type_data(self, pid):
+        """Возвращает данные типа событий."""
+        event_type_data = self.session.query(c_eventtype.CEventType.fname,
+                                        c_eventtype.CEventType.fcolor,
+                                        c_eventtype.CEventType.femodji,
+                                       ).\
+                                  filter_by(id=pid).first()
+        return (event_type_data.fname,
+                event_type_data.fcolor,
+                event_type_data.femodji)
 
 
     def get_event_types_list(self): # +
