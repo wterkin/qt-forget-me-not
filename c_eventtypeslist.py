@@ -43,3 +43,7 @@ class CEventTypesList(QtWidgets.QMainWindow):
     def update(self):
         """Обновляет список событий."""
         self.__load_data()
+        list_is_not_empty = len(self.event_name_list) > 0
+        self.QButtonEdit.setEnabled(list_is_not_empty)
+        self.QButtonDelete.setEnabled(list_is_not_empty)
+        

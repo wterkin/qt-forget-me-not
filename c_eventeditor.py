@@ -69,9 +69,13 @@ class CEventEditor(QtWidgets.QMainWindow):
     def __recalc(self):
         """Пересчитывает введённое количество дней в дату."""
         entered_days = self.lineEdit_Days.text()
-        date_after_days = QtCore.QDate.currentDate()
-        date_after_days = date_after_days.addDays(int(entered_days))
-        self.dateEdit_EventDate.setDate(date_after_days)
+        if len(entered_days) > 0:
+
+            if entered_days.isdigit():
+            
+                date_after_days = QtCore.QDate.currentDate()
+                date_after_days = date_after_days.addDays(int(entered_days))
+                self.dateEdit_EventDate.setDate(date_after_days)
 
     
     def __save_data(self):
