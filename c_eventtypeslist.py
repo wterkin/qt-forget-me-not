@@ -32,9 +32,16 @@ class CEventTypesList(QtWidgets.QMainWindow):
 
     def __delete_event_type(self):
         """Удаляет выбранное событие."""
+        
         selected_item = self.listWidget.currentRow()
         event_type_ident = self.event_type_id_list[selected_item]
-        self.database.delete_event_type(event_type_ident)
+        if self.database.ask_if_event_type_using(event_type_ident):
+            
+            # ToDo: Вот тут вставить сообщение о невозможности удаления типа событий
+            pass
+        else:    
+            
+            self.database.delete_event_type(event_type_ident)
         self.update()
 
 
@@ -60,10 +67,10 @@ class CEventTypesList(QtWidgets.QMainWindow):
         """Изменяет уже существующий тип событий."""
         selected_item = self.listWidget.currentRow()
         event_type_ident = self.event_type_id_list[selected_item]
-        window = evted.CEventEditor(pparent=self, 
-                                   pdatabase=self.database, 
-                                   papplication_folder=self.application_folder,
-                                   pid=event_ident)
+        window = evted.CEventTypeEditor(pparent=self, 
+                                        pdatabase=self.database, 
+                                        papplication_folder=self.application_folder,
+                                        pid=event_type_ident)
         window.show()
 
 

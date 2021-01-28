@@ -47,6 +47,15 @@ class CDatabase(object):
         """Конструктор."""
         self.config = pconfig
         self.connect_to_database()
+            
+
+    def ask_if_event_type_using(self, pid): # +
+        """Возвращает True, если данный тип событий используется, иначе False."""
+        event_data = self.session.query(c_event.CEvent.id)
+        event_data = event_data.filter_by(ftype=pid)
+        event_data = event_data.filter_by(fstatus=STATUS_ACTIVE)
+        return event_type_data.count()
+
 
 
     def cleanup(self):
@@ -461,6 +470,13 @@ class CDatabase(object):
         self.session.commit()
 
 
+    def insert_event_type(self, pname, pcolor, pemodji): # +
+        """Добавляет новое событие в БД."""
+        event_type = c_eventtype.CEventType(1, pname, pcolor, pemodji)
+        self.session.add(event_type)
+        self.session.commit()
+
+
     def universal_query(self, pday_from, pmonth_from, pyear_from, pday_to, pmonth_to, pyear_to, pperiod):
         """Процедура выбирает данные из БД."""
         queried_data = self.session.query(c_event.CEvent.fname,
@@ -516,4 +532,13 @@ class CDatabase(object):
                            c_event.CEvent.fday:pdate.day,
                            c_event.CEvent.ftype:ptype,
                            c_event.CEvent.fperiod:pperiod}, synchronize_session = False)
+        self.session.commit()
+
+        
+    def update_event_type(self, pid, pname, pcolor, pemodji): # +
+        """Изменяет уже существующее событие в БД."""
+        event_type_data = self.session.query(c_eventtype.CEventType).filter_by(id=pid)
+        event_type_data.update({c_eventtype.CEventType.fname: pname,
+                                c_eventtype.CEventType.fcolor: pcolor,
+                                c_eventtype.CEventType.femodji: pemodji}, synchronize_session = False)
         self.session.commit()
