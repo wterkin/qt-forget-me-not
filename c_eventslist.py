@@ -20,6 +20,7 @@ class CEventList(QtWidgets.QMainWindow):
         super(CEventList, self).__init__(pparent)
         self.parent = pparent
         self.database = pdatabase
+        self.backup_need = False
         self.application_folder = papplication_folder
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_LIST_FORM, self)
         self.QButtonAdd.clicked.connect(self.__insert_event)
@@ -32,7 +33,7 @@ class CEventList(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         """Перехватывает событие закрытия окна."""
-        self.parent.update()
+        self.parent.update(self.backup_need)
         event.accept()
 
 
@@ -41,7 +42,9 @@ class CEventList(QtWidgets.QMainWindow):
         selected_item = self.listWidget.currentRow()
         event_ident = self.event_id_list[selected_item]
         self.database.delete_event(event_ident)
+        self.backup_need = True
         self.update()
+        
         
     
     def __insert_event(self):
@@ -74,9 +77,12 @@ class CEventList(QtWidgets.QMainWindow):
         window.show()
    
    
-    def update(self):
+    def update(self, pbackup_need = False):
         """Обновляет список событий."""
         
+        if pbackup_need:
+        
+            self.backup_need = True
         self.__load_data()
         list_is_not_empty = len(self.event_name_list) > 0
         self.QButtonEdit.setEnabled(list_is_not_empty)

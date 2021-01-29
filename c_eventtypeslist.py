@@ -16,6 +16,7 @@ class CEventTypesList(QtWidgets.QMainWindow):
         self.parent = pparent
         self.database = pdatabase
         self.application_folder = papplication_folder
+        self.backup_need = False
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_TYPES_LIST_FORM, self)
         self.QButtonAdd.clicked.connect(self.__insert_event_type)
         self.QButtonEdit.clicked.connect(self.__update_event_type)
@@ -27,7 +28,7 @@ class CEventTypesList(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         """Перехватывает событие закрытия окна."""
-        self.parent.update()
+        self.parent.update(self.backup_need)
         event.accept()
 
 
@@ -38,11 +39,11 @@ class CEventTypesList(QtWidgets.QMainWindow):
         event_type_ident = self.event_type_id_list[selected_item]
         if self.database.ask_if_event_type_using(event_type_ident):
             
-            # ToDo: Вот тут вставить сообщение о невозможности удаления типа событий
             tls.notice(self, "Внимание!", "Этот тип используется и не может быть удалён.")
         else:    
             
             self.database.delete_event_type(event_type_ident)
+            self.backup_need = True
         self.update()
 
 
@@ -75,8 +76,11 @@ class CEventTypesList(QtWidgets.QMainWindow):
         window.show()
 
 
-    def update(self):
+    def update(self, pbackup_need = False):
         """Обновляет список событий."""
+        if pbackup_need:
+        
+            self.backup_need = True
         self.__load_data()
         list_is_not_empty = len(self.event_type_name_list) > 0
         self.QButtonEdit.setEnabled(list_is_not_empty)

@@ -3,6 +3,7 @@
 """Qt оболочка для forget-me-not."""
 import sys
 from pathlib import Path
+import shutil
 from datetime import datetime
 from PyQt5 import QtWidgets, QtGui
 from PyQt5 import uic
@@ -44,9 +45,21 @@ class CMainWindow(QtWidgets.QMainWindow):
     def __backup(self):
         """Функция осуществляет резервное копирование БД."""
         self.database.disconnect_from_database()
-        new_filename = f"forget-me-not_{datetime.now():%Y%m%d_%H%M}"
 
+        backup_folder = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY)).parent / const.BACKUPS_FOLDER
+        print("*** MN:BK:bfl ", backup_folder)
+        if not backup_folder.exists():
         
+            backup_folder.mkdir(parents=True, exist_ok=True)
+            
+        db_filename = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY))
+        print("*** MN:BK:dbfl ", db_filename)
+        new_filename = f"forget-me-not_{datetime.now():%Y%m%d_%H%M}.db"
+        print("*** MN:BK:nfl ", new_filename)
+        full_new_filename = backup_folder / new_filename
+        print("*** MN:BK:fnl ", full_new_filename)
+        shutil.copyfile(db_filename, full_new_filename)
+        #config_folder_path = Path(Path.home() / CONFIG_FOLDER)
         
     def __display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
@@ -181,15 +194,19 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         """Перехватывает событие закрытия окна."""
+        # if self.backup_need:
+        
         self.__backup()
         event.accept()
 
  
-    def update(self):
+    def update(self, pbackup_need = False):
         """Обновляет содержимое браузера."""
+        if pbackup_need:
+        
+            self.backup_need = True
         self.textBrowser.clear()
         self.__display_content(self.__load_data())
-        self.backup_need = True
         
 
 if __name__ == '__main__':

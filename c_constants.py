@@ -5,6 +5,7 @@ EVENT_LIST_FORM = "f_eventslist.ui"
 EVENT_EDITOR_FORM = "f_eventeditor.ui"
 EVENT_TYPES_LIST_FORM = "f_eventtypeslist.ui"
 EVENT_TYPE_EDITOR_FORM = "f_eventtypeeditor.ui"
+BACKUPS_FOLDER = "backups"
 
 TYPE_SEPARATOR = " : "
 
