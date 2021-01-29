@@ -51,9 +51,9 @@ class CDatabase(object):
 
     def ask_if_event_type_using(self, pid): # +
         """Возвращает True, если данный тип событий используется, иначе False."""
-        event_data = self.session.query(c_event.CEvent.id)
-        event_data = event_data.filter_by(ftype=pid)
-        event_data = event_data.filter_by(fstatus=STATUS_ACTIVE)
+        event_type_data = self.session.query(c_event.CEvent.id)
+        event_type_data = event_type_data.filter_by(ftype=pid)
+        event_type_data = event_type_data.filter_by(fstatus=STATUS_ACTIVE)
         return event_type_data.count()
 
 
@@ -415,7 +415,9 @@ class CDatabase(object):
         """Возвращает список ID и наименований типов событий."""
         event_types_name_list = list()
         event_types_id_list = list()
-        queried_data = self.session.query(c_eventtype.CEventType).order_by(c_eventtype.CEventType.fname)
+        queried_data = self.session.query(c_eventtype.CEventType)
+        queried_data = queried_data.filter(c_eventtype.CEventType.fstatus > STATUS_INACTIVE)
+        queried_data = queried_data.order_by(c_eventtype.CEventType.fname)
         for event_type in queried_data:
             
             event_types_name_list.append(event_type.fname)
@@ -425,7 +427,9 @@ class CDatabase(object):
 
     def get_event_types_objects_list(self):
         """Возвращает список объектов класса CEventType."""
-        return self.session.query(c_eventtype.CEventType).order_by(c_eventtype.CEventType.fname)
+        event_types_data = self.session.query(c_eventtype.CEventType)
+        event_types_data = event_types_data.filter(c_eventtype.CEventType.fstatus > STATUS_INACTIVE)
+        return event_types_data.order_by(c_eventtype.CEventType.fname)
 
 
     def get_periods_list(self): # +

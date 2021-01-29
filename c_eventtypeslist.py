@@ -6,6 +6,7 @@ from PyQt5 import uic
 
 import c_constants as const
 import c_eventtypeeditor as evted
+import c_tools as tls
 
 class CEventTypesList(QtWidgets.QMainWindow):
     """Класс окна списка событий."""
@@ -38,7 +39,7 @@ class CEventTypesList(QtWidgets.QMainWindow):
         if self.database.ask_if_event_type_using(event_type_ident):
             
             # ToDo: Вот тут вставить сообщение о невозможности удаления типа событий
-            pass
+            tls.notice(self, "Внимание!", "Этот тип используется и не может быть удалён.")
         else:    
             
             self.database.delete_event_type(event_type_ident)
