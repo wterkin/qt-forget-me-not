@@ -20,6 +20,7 @@ class CEventTypeEditor(QtWidgets.QMainWindow):
         self.id = pid
         uic.loadUi(self.application_folder / const.FORMS_FOLDER / const.EVENT_TYPE_EDITOR_FORM, self)
         self.pushButton_Accept.clicked.connect(self.__accept)
+        self.pushButton_ColorDialog.clicked.connect(self.__choose_color)
         # *** Загрузим список периодов
         if self.id is not None:
 
@@ -32,7 +33,21 @@ class CEventTypeEditor(QtWidgets.QMainWindow):
         self.parent.update(True)
         self.close()
 
-        
+       
+    def __choose_color(self):
+        """Функция вызова диалога выбора цвета."""
+        selected_color = QtWidgets.QColor(self.lineEdit_EventTypeColor.text())
+        color_dlg = QtWidgets.QColorDialog(selected_color, self)
+        color_dlg.exec()
+        selected_color = color_dlg.selected_color
+        self.lineEdit_EventTypeColor.setText(selected_color.toRgb())
+               # selected_file = QtWidgets.QFileDialog.getOpenFileName(parent=self,
+                                                              # caption="Выберите файл базы данных SQLITE",
+                                                              # directory=str(db_path),
+                                                              # filter="forget-me-not*.db"
+                                                             # )
+
+       
     def closeEvent(self, event):
         """Перехватывает событие закрытия окна."""
         event.accept()
