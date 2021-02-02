@@ -61,6 +61,22 @@ class CMainWindow(QtWidgets.QMainWindow):
         shutil.copyfile(db_filename, full_new_filename)
         #config_folder_path = Path(Path.home() / CONFIG_FOLDER)
         
+    
+    def __backup_rotation(self):
+        """Убивает старые бэкапы."""
+        #cfg.MAX_BACKUP_FILES_KEY
+        backup_files = []
+        max_backup_files = self.config(const.MAX_BACKUP_FILES_KEY)
+        backup_folder = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY)).parent / const.BACKUPS_FOLDER)
+        for backup_file in backup_folder.iterdir():
+            
+            backup_folder.append(backup_file)
+        if len(backup_files) > max_backup_files:
+            
+            unusable_files = backup_files[max_backup_files+1:]
+            print(unusable_files)
+            
+        
     def __display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
         # *** Формируем таблицу стилей страницы
@@ -197,6 +213,7 @@ class CMainWindow(QtWidgets.QMainWindow):
         # if self.backup_need:
         
         self.__backup()
+        self.__backup_rotation()
         event.accept()
 
  

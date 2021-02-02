@@ -51,6 +51,7 @@ class CConfiguration(object):
             self.store_value(MAX_BACKUP_FILES_KEY, 5)
             self.write_config()
     
+    
     def store_value(self, pkey, pvalue):
         """Сохраняет заданное значение по заданному ключу в словарь конфигурации."""
         result = False
