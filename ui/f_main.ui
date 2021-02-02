@@ -22,6 +22,9 @@
   </widget>
   <widget class="QStatusBar" name="QStatus"/>
   <widget class="QToolBar" name="toolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -97,12 +100,18 @@
    </property>
   </action>
   <action name="actionSetup">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset>
      <normaloff>application-menu.png</normaloff>application-menu.png</iconset>
    </property>
    <property name="text">
     <string>Настройки</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
  </widget>
