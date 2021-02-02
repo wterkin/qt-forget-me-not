@@ -66,14 +66,12 @@ class CDatabase(object):
                              and_(c_event.CEvent.fstatus>STATUS_INACTIVE,
                              and_(c_event.CEvent.fyear<date_passed.year)))
         past_year = query.all()
-        # print("*** DB:CLP:yr ", past_year)
         query = self.session.query(c_event.CEvent.id)
         query = query.filter(c_event.CEvent.fperiod==const.EVENT_ONE_SHOT,
                              and_(c_event.CEvent.fstatus>STATUS_INACTIVE,
                              and_(c_event.CEvent.fyear==date_passed.year,
                              and_(c_event.CEvent.fmonth<date_passed.month))))
         past_month = query.all()
-        # print("*** DB:CLP:mn ", past_month)
         
         query = self.session.query(c_event.CEvent.id)
         query = query.filter(c_event.CEvent.fperiod==const.EVENT_ONE_SHOT,
@@ -82,7 +80,6 @@ class CDatabase(object):
                              and_(c_event.CEvent.fmonth==date_passed.month,
                              and_(c_event.CEvent.fday<=date_passed.day)))))
         past_days = query.all()
-        # print("*** DB:CLP:dy ", past_days)
        
         full_list = []
         full_list.extend(past_year)
@@ -91,7 +88,6 @@ class CDatabase(object):
         
         for event_id in full_list:
             
-            print("*** DB:CLN:id ", event_id)
             event_query = self.session.query(c_event.CEvent).filter_by(id=event_id[0])
             event_query.update({c_event.CEvent.fstatus:STATUS_INACTIVE}, synchronize_session = False)
             self.session.commit()
@@ -342,7 +338,6 @@ class CDatabase(object):
         date_from = tls.shift_date(dt.now().date(), -1)
         # *** Дата по..
         date_to = date_from + dtime.timedelta(days=int(self.config.restore_value(c_config.MONITORING_PERIOD_KEY)))
-        # print("*** DB:GAY:1")
         # *** Если дата по в следующем году 
         if date_to.year != date_from.year:
             

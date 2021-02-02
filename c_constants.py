@@ -12,7 +12,6 @@ TYPE_SEPARATOR = " : "
 MAIN_WINDOW_TITLE = "Forget-Me-Not version 0.1"
 
 EVENT_LIST_WINDOW_TITLE = "Список событий"
-# EVENT_LIST_WINDOW_TITLE = "Редактор событий"
 
 EVENT_MONTH_PERIOD = 1
 EVENT_YEAR_PERIOD = 2

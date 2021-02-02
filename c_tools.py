@@ -9,8 +9,9 @@ from PyQt5 import QtWidgets
 LAST_MONTH = 12
 
 def get_months_last_date(pdate):
-    """Возвращает первый день месяца"""
+    """Возвращает последний день месяца"""
     return calendar.monthrange(pdate.year, pdate.month)[1]
+
 
 def get_years_last_date(pdate):
     """Возвращает последний день года."""
@@ -22,7 +23,6 @@ def notice(parent,title,text):
     message_box.setWindowTitle(title)
     message_box.setText(text)
     message_box.addButton("Понятно.", QtWidgets.QMessageBox.AcceptRole)
-    # mb.addButton("Нет", QtWidgets.QMessageBox.NoRole)
     message_box.exec()
 
 
@@ -40,6 +40,7 @@ def message_box(parent,title,text):
         return True
     else:
         return False
+
 
 def shift_date(pdate, pdays):
     """Смещает дату на заданный интервал.

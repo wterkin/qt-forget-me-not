@@ -47,34 +47,31 @@ class CMainWindow(QtWidgets.QMainWindow):
         self.database.disconnect_from_database()
 
         backup_folder = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY)).parent / const.BACKUPS_FOLDER
-        print("*** MN:BK:bfl ", backup_folder)
         if not backup_folder.exists():
         
             backup_folder.mkdir(parents=True, exist_ok=True)
             
         db_filename = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY))
-        print("*** MN:BK:dbfl ", db_filename)
         new_filename = f"forget-me-not_{datetime.now():%Y%m%d_%H%M}.db"
-        print("*** MN:BK:nfl ", new_filename)
         full_new_filename = backup_folder / new_filename
-        print("*** MN:BK:fnl ", full_new_filename)
         shutil.copyfile(db_filename, full_new_filename)
-        #config_folder_path = Path(Path.home() / CONFIG_FOLDER)
         
     
     def __backup_rotation(self):
         """Убивает старые бэкапы."""
-        #cfg.MAX_BACKUP_FILES_KEY
         backup_files = []
-        max_backup_files = self.config(const.MAX_BACKUP_FILES_KEY)
-        backup_folder = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY)).parent / const.BACKUPS_FOLDER)
+        max_backup_files = self.config.restore_value(cfg.MAX_BACKUP_FILES_KEY)
+        backup_folder = Path(self.config.restore_value(cfg.DATABASE_FILE_KEY)).parent / const.BACKUPS_FOLDER
         for backup_file in backup_folder.iterdir():
             
-            backup_folder.append(backup_file)
+            backup_files.append(backup_file)
         if len(backup_files) > max_backup_files:
             
-            unusable_files = backup_files[max_backup_files+1:]
-            print(unusable_files)
+            useless_files = backup_files[max_backup_files+1:]
+            for useless_file in useless_files:
+            
+                useless_file.unlink()
+            
             
         
     def __display_content(self, pactual_data):
@@ -160,22 +157,13 @@ class CMainWindow(QtWidgets.QMainWindow):
             time_mark = "▲"  # "👆⬆️" # "🔼" # ▲►▼
         elif event_date == datetime.now().date():
 
-            # color_mark = self.config.restore_value(cfg.TODAY_COLOR_KEY)
             time_mark = "►"  # "👉➡️" # "▶️" # 
         elif event_date == tls.shift_date(datetime.now(), -1).date():
 
-            # color_mark = self.config.restore_value(cfg.YESTERDAY_COLOR_KEY)
             time_mark = "▼"  # "👇⬇️" # "🔽" # 
         else:
 
             time_mark = "🕒"
-        
-        # if color_mark:
-
-            # # html_row = f"<tr><td> <font color='{color_mark}'>{time_mark} {emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
-            # html_row = f"<tr><td>{time_mark} {emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
-        # else:
-        
         html_row = f"<tr><td class='style_{type_id}'>{time_mark} {emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
         
         if (type_id == db.EVENT_TYPE_MEMORY_DAY) or (type_id == db.EVENT_TYPE_BIRTH_DAY) :
@@ -210,10 +198,10 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         """Перехватывает событие закрытия окна."""
-        # if self.backup_need:
+        if self.backup_need:
         
-        self.__backup()
-        self.__backup_rotation()
+            self.__backup()
+            self.__backup_rotation()
         event.accept()
 
  

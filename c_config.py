@@ -9,8 +9,6 @@ CONFIG_FILE_NAME = "forget-me-not.json"
 DATABASE_FILE_NAME = "forget-me-not.db"
 DATABASE_FILE_KEY = "database_file_name"
 MONITORING_PERIOD_KEY= "monitoring_period"
-# TODAY_COLOR_KEY = "today_color"
-# YESTERDAY_COLOR_KEY = "yesterday_color"
 MAX_BACKUP_FILES_KEY = "max_backup_files"
 
 class CConfiguration(object):
@@ -38,14 +36,6 @@ class CConfiguration(object):
         
             self.store_value(MONITORING_PERIOD_KEY,  21)
             self.write_config()
-        # if not TODAY_COLOR_KEY in self.config:
-        
-            # self.store_value(TODAY_COLOR_KEY, "LightGoldenrodYellow")
-            # self.write_config()
-        # if not YESTERDAY_COLOR_KEY in self.config:
-        
-            # self.store_value(YESTERDAY_COLOR_KEY, "LightSlateGrey")
-            # self.write_config()
         if not MAX_BACKUP_FILES_KEY in self.config:
         
             self.store_value(MAX_BACKUP_FILES_KEY, 5)
