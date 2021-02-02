@@ -72,7 +72,6 @@ class CMainWindow(QtWidgets.QMainWindow):
             
                 useless_file.unlink()
             
-            
         
     def __display_content(self, pactual_data):
         """Генерирует HTML-код на основании выборки и выводит его в виджет."""
@@ -147,6 +146,10 @@ class CMainWindow(QtWidgets.QMainWindow):
 
     def __make_html_row(self, data_row):
         """Создает строку HTML с заданными параметрами."""
+        future_sign = self.config.restore_value(cfg.FUTURE_SIGN_KEY)
+        tomorrow_sign = self.config.restore_value(cfg.TOMORROW_SIGN_KEY)
+        today_sign = self.config.restore_value(cfg.TODAY_SIGN_KEY)
+        yesterday_sign = self.config.restore_value(cfg.YESTERDAY_SIGN_KEY)
         type_id = data_row[db.EVENT_LIST_CONVERTED_TYPE_ID_FIELD]
         emodji = data_row[db.EVENT_LIST_CONVERTED_TYPE_EMODJI_FIELD]
         type_name = data_row[db.EVENT_LIST_CONVERTED_TYPE_NAME_FIELD]
@@ -154,16 +157,16 @@ class CMainWindow(QtWidgets.QMainWindow):
         event_name = data_row[db.EVENT_LIST_CONVERTED_NAME_FIELD]
         if event_date == tls.shift_date(datetime.now(), 1).date():
             
-            time_mark = "▲"  # "👆⬆️" # "🔼" # ▲►▼
+            time_mark = tomorrow_sign
         elif event_date == datetime.now().date():
 
-            time_mark = "►"  # "👉➡️" # "▶️" # 
+            time_mark = today_sign
         elif event_date == tls.shift_date(datetime.now(), -1).date():
 
-            time_mark = "▼"  # "👇⬇️" # "🔽" # 
+            time_mark = yesterday_sign
         else:
 
-            time_mark = "🕒"
+            time_mark = future_sign
         html_row = f"<tr><td class='style_{type_id}'>{time_mark} {emodji} {type_name}{const.TYPE_SEPARATOR}{event_date:%d.%m.%Y} {event_name} "
         
         if (type_id == db.EVENT_TYPE_MEMORY_DAY) or (type_id == db.EVENT_TYPE_BIRTH_DAY) :

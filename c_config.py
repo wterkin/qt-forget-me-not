@@ -10,6 +10,10 @@ DATABASE_FILE_NAME = "forget-me-not.db"
 DATABASE_FILE_KEY = "database_file_name"
 MONITORING_PERIOD_KEY= "monitoring_period"
 MAX_BACKUP_FILES_KEY = "max_backup_files"
+TOMORROW_SIGN_KEY = "tomorrow_sign"
+TODAY_SIGN_KEY = "today_sign"
+YESTERDAY_SIGN_KEY = "yesterday_sign"
+FUTURE_SIGN_KEY = "future_sign"
 
 class CConfiguration(object):
     """Класс конфигурации программы."""
@@ -39,6 +43,22 @@ class CConfiguration(object):
         if not MAX_BACKUP_FILES_KEY in self.config:
         
             self.store_value(MAX_BACKUP_FILES_KEY, 5)
+            self.write_config()
+        if not FUTURE_SIGN_KEY in self.config:
+
+            self.store_value(FUTURE_SIGN_KEY, "🕒")
+            self.write_config()
+        if not TOMORROW_SIGN_KEY in self.config:
+
+            self.store_value(TOMORROW_SIGN_KEY, "▲")
+            self.write_config()
+        if not TODAY_SIGN_KEY in self.config:
+
+            self.store_value(TODAY_SIGN_KEY, "►")
+            self.write_config()
+        if not YESTERDAY_SIGN_KEY in self.config:
+
+            self.store_value(YESTERDAY_SIGN_KEY, "▼")
             self.write_config()
     
     
