@@ -15,6 +15,7 @@ import c_eventslist as evlst
 import c_eventtypeslist as evtypelst
 import c_tools as tls
 
+PROGRAM_VERSION = "1.0RC1"
 # ToDo: Ежедневный и еженедельный бэкап базы
 
 class CMainWindow(QtWidgets.QMainWindow):
@@ -38,6 +39,9 @@ class CMainWindow(QtWidgets.QMainWindow):
             self.database.create_database()
         self.database.cleanup()
         self.backup_need = False
+        #PROGRAM_VERSION
+        window_title = self.windowTitle() + f" ver. {PROGRAM_VERSION}"
+        self.setWindowTitle(window_title)
         self.update()
         self.show()
   
