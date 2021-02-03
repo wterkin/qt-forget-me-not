@@ -15,7 +15,7 @@ import c_eventslist as evlst
 import c_eventtypeslist as evtypelst
 import c_tools as tls
 
-PROGRAM_VERSION = "1.0RC1"
+PROGRAM_VERSION = "1.0"
 # ToDo: Ежедневный и еженедельный бэкап базы
 
 class CMainWindow(QtWidgets.QMainWindow):
@@ -42,6 +42,7 @@ class CMainWindow(QtWidgets.QMainWindow):
         #PROGRAM_VERSION
         window_title = self.windowTitle() + f" ver. {PROGRAM_VERSION}"
         self.setWindowTitle(window_title)
+        self.setWindowIcon(QtGui.QIcon('ui/forget-me-not.ico'))
         self.update()
         self.show()
   
