@@ -14,6 +14,8 @@ TOMORROW_SIGN_KEY = "tomorrow_sign"
 TODAY_SIGN_KEY = "today_sign"
 YESTERDAY_SIGN_KEY = "yesterday_sign"
 FUTURE_SIGN_KEY = "future_sign"
+BACKGROUND_COLOR_KEY = "background_color"
+
 
 class CConfiguration(object):
     """Класс конфигурации программы."""
@@ -60,7 +62,10 @@ class CConfiguration(object):
 
             self.store_value(YESTERDAY_SIGN_KEY, "▼")
             self.write_config()
-    
+        if not BACKGROUND_COLOR_KEY in self.config:
+            self.store_value(BACKGROUND_COLOR_KEY, "#3F3F3F")
+            self.write_config()
+            
     
     def store_value(self, pkey, pvalue):
         """Сохраняет заданное значение по заданному ключу в словарь конфигурации."""

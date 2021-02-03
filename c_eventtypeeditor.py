@@ -3,6 +3,7 @@
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5 import uic
+from PyQt5.QtGui import QColor
 
 from datetime import datetime
 
@@ -36,16 +37,13 @@ class CEventTypeEditor(QtWidgets.QMainWindow):
        
     def __choose_color(self):
         """Функция вызова диалога выбора цвета."""
-        selected_color = QtWidgets.QColor(self.lineEdit_EventTypeColor.text())
-        color_dlg = QtWidgets.QColorDialog(selected_color, self)
-        color_dlg.exec()
-        selected_color = color_dlg.selected_color
-        self.lineEdit_EventTypeColor.setText(selected_color.toRgb())
-               # selected_file = QtWidgets.QFileDialog.getOpenFileName(parent=self,
-                                                              # caption="Выберите файл базы данных SQLITE",
-                                                              # directory=str(db_path),
-                                                              # filter="forget-me-not*.db"
-                                                             # )
+        selected_color = QColor(self.lineEdit_EventTypeColor.text())
+        color_dlg = QtWidgets.QColorDialog()
+        color_dlg.setCurrentColor(selected_color)
+        if color_dlg.exec_() == QtWidgets.QColorDialog.Accepted:
+        
+            selected_color = color_dlg.currentColor()
+            self.lineEdit_EventTypeColor.setText(selected_color.name())
 
        
     def closeEvent(self, event):

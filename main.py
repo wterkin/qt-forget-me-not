@@ -100,7 +100,8 @@ class CMainWindow(QtWidgets.QMainWindow):
                                 </table>\n
                               </body>\n
                             </html>"""
-        self.textBrowser.setStyleSheet("background-color: #3F3F3F;")
+        background_color = self.config.restore_value(cfg.BACKGROUND_COLOR_KEY)
+        self.textBrowser.setStyleSheet(f"background-color: {background_color};")
         self.textBrowser.insertHtml(html_document)
         
 
