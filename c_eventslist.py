@@ -12,8 +12,6 @@ import c_eventeditor as eved
 import c_tools as tls
 
 
-# ToDo: создать тут функу, которая будет обновлять список при вызове со стороны.
-
 class CEventList(QtWidgets.QMainWindow):
     """Класс окна списка событий."""
     def __init__(self, pparent, pdatabase, papplication_folder):

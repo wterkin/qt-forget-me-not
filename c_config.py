@@ -5,6 +5,7 @@
 from pathlib import Path
 import json
 
+ALL_CONFIGS_FOLDER = ".config/"
 CONFIG_FOLDER = ".config/forget-me-not/" 
 CONFIG_FILE_NAME = "forget-me-not.json"
 DATABASE_FILE_NAME = "forget-me-not.db"
@@ -22,6 +23,12 @@ class CConfiguration(object):
     """Класс конфигурации программы."""
     def __init__(self):
         """Конструктор."""
+
+        all_configs_folder_path = Path(Path.home() / ALL_CONFIGS_FOLDER)
+        if not all_configs_folder_path.exists():
+            
+            all_configs_folder_path.mkdir()
+
         config_folder_path = Path(Path.home() / CONFIG_FOLDER)
         if not config_folder_path.exists():
             
