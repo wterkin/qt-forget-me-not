@@ -1,6 +1,7 @@
 #!/usr/bin/python
 ## -*- coding: utf-8 -*-
-"""Модуль класса типа события Alchemy"""
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
+"""Модуль класса типа события."""
 
 from sqlalchemy import Table, Column, String
 

@@ -1,5 +1,6 @@
 #!/usr/bin/python
 ## -*- coding: utf-8 -*-
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
 """Модуль класса события."""
 
 from sqlalchemy import Table, Column, Integer, String, ForeignKey, create_engine

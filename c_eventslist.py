@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
+"""Модуль класса списка событий."""
 import sys
 
 from PyQt5 import QtWidgets

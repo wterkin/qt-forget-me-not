@@ -1,5 +1,6 @@
 #!/usr/bin/python
 ## -*- coding: utf-8 -*-
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
 """Модуль всякой полезной всячины."""
 import calendar
 import c_constants as cnst

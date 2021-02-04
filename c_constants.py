@@ -1,4 +1,7 @@
-
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
+"""Модуль констант."""
 FORMS_FOLDER = "ui/"
 MAIN_WINDOW_FORM = "f_main.ui"
 EVENT_LIST_FORM = "f_eventslist.ui"

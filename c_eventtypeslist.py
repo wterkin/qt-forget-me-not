@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
+"""Модуль класса списка типов событий."""
 from PyQt5 import QtWidgets
 from PyQt5 import uic
 

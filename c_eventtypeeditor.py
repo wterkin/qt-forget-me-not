@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
+"""Модуль класса редактора типа события."""
 from PyQt5 import QtWidgets, QtCore
 from PyQt5 import uic
 from PyQt5.QtGui import QColor

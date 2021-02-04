@@ -1,6 +1,7 @@
 #!/usr/bin/python
 ## -*- coding: utf-8 -*-
-"""Модуль класса-предка классов таблиц Alchemy"""
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
+"""Модуль класса-предка классов таблиц."""
 
 from sqlalchemy import Table, Column, Integer, MetaData
 from sqlalchemy.ext.declarative import declarative_base

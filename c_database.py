@@ -1,6 +1,7 @@
 #!/usr/bin/python
 ## -*- coding: utf-8 -*-
-
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
+"""Модуль для работы с БД."""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import and_, or_

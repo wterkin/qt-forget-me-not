@@ -1,6 +1,7 @@
 #!/usr/bin/python
 ## -*- coding: utf-8 -*-
-"""Модуль класса периода события Alchemy"""
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
+"""Модуль класса периода событий."""
 
 from sqlalchemy import Table, Column, String
 

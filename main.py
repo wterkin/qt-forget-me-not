@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 ## -*- coding: utf-8 -*-
+# @author: Andrey Pakhomenkov pakhomenkov@yandex.ru
 """Qt оболочка для forget-me-not."""
 import sys
 from pathlib import Path
@@ -15,8 +16,7 @@ import c_eventslist as evlst
 import c_eventtypeslist as evtypelst
 import c_tools as tls
 
-PROGRAM_VERSION = "1.0"
-# ToDo: Ежедневный и еженедельный бэкап базы
+PROGRAM_VERSION = "1.1"
 
 class CMainWindow(QtWidgets.QMainWindow):
     """Класс."""
@@ -190,19 +190,20 @@ class CMainWindow(QtWidgets.QMainWindow):
                                                               directory=str(db_path),
                                                               filter="forget-me-not*.db"
                                                              )
-        result = QtWidgets.QMessageBox.question(self,
-                                                "Подтверждение",
-                                                "Вы действительно хотите использовать эту базу данных?",
-                                                buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                                defaultButton=QtWidgets.QMessageBox.No                            
-                                                )
-        if result==QtWidgets.QMessageBox.Yes:
-            
-            self.config.store_value(cfg.DATABASE_FILE_KEY, selected_file[0])
-            self.config.write_config()
-            self.database.disconnect_from_database()
-            self.database.connect_to_database()
-            self.update()
+        if selected_file[0]:
+            result = QtWidgets.QMessageBox.question(self,
+                                                    "Подтверждение",
+                                                    "Вы действительно хотите использовать эту базу данных?",
+                                                    buttons=QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                    defaultButton=QtWidgets.QMessageBox.No                            
+                                                    )
+            if result==QtWidgets.QMessageBox.Yes:
+                
+                self.config.store_value(cfg.DATABASE_FILE_KEY, selected_file[0])
+                self.config.write_config()
+                self.database.disconnect_from_database()
+                self.database.connect_to_database()
+                self.update()
 
 
     def closeEvent(self, event):
