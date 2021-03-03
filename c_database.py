@@ -241,9 +241,9 @@ class CDatabase(object):
         self.session.add(event_type)
         event_type = c_eventtype.CEventType(1, "День рождения ", "#ecc176", "🎂")
         self.session.add(event_type)
-        event_type = c_eventtype.CEventType(1, "Памятная дата - ", "#02b6ec", "📆")
+        event_type = c_eventtype.CEventType(1, "Памятная дата ", "#02b6ec", "📆")
         self.session.add(event_type)
-        event_type = c_eventtype.CEventType(1, "Напоминание: ", "#6dec04", "🔔")
+        event_type = c_eventtype.CEventType(1, "Напоминание ", "#6dec04", "🔔")
         self.session.add(event_type)
         self.session.commit()
 
