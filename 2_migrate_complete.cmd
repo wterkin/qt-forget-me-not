@@ -1,0 +1,1 @@
+C:\Languages\Python_3.8.1\Scripts\alembic.exe upgrade head
