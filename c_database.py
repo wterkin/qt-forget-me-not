@@ -283,7 +283,6 @@ class CDatabase(object):
             queried_data2 = self.convert_monthly_tuple(queried_data2, next_month_date_from)
             # *** Сливаем выборки
             queried_data1.extend(queried_data2)
-            #print(queried_data1)
             return queried_data1
         else:
 
@@ -291,7 +290,6 @@ class CDatabase(object):
             queried_data = self.universal_query(date_from.day, 0, 0, date_to.day, 0, 0, const.EVENT_MONTH_PERIOD)
             # *** Конвертируем кортеж в список и подставляем текущий месяц и год
             queried_data = self.convert_monthly_tuple(queried_data, date_from)
-            #print(queried_data)
             return queried_data
         
 
