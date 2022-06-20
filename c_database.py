@@ -283,6 +283,7 @@ class CDatabase(object):
             queried_data2 = self.convert_monthly_tuple(queried_data2, next_month_date_from)
             # *** Сливаем выборки
             queried_data1.extend(queried_data2)
+            # print(queried_data1)
             return queried_data1
         else:
 
@@ -290,6 +291,7 @@ class CDatabase(object):
             queried_data = self.universal_query(date_from.day, 0, 0, date_to.day, 0, 0, const.EVENT_MONTH_PERIOD)
             # *** Конвертируем кортеж в список и подставляем текущий месяц и год
             queried_data = self.convert_monthly_tuple(queried_data, date_from)
+            # print(queried_data)
             return queried_data
         
 
@@ -306,10 +308,10 @@ class CDatabase(object):
             this_year_date_to = dtime.datetime(date_from.year, date_from.month, last_day)
             # *** И от нач. года до даты по 
             next_year_date_from = this_year_date_to + dtime.timedelta(days=1)
-            queried_data1 = self.universal_query(date_from.day, date_from.month, date_from.year, this_year_date_to.day, this_year_date_to.month, this_year_date_to.year, const.EVENT_YEAR_PERIOD)
+            queried_data1 = self.universal_query(date_from.day, date_from.month, date_from.year, this_year_date_to.day, this_year_date_to.month, this_year_date_to.year, const.EVENT_ONE_SHOT)
             queried_data1 = self.convert_one_shot_tuple(queried_data1)
             # Вторая выборка
-            queried_data2 = self.universal_query(next_year_date_from.day, next_year_date_from.month, next_year_date_from.year, date_to.day, date_to.month, date_to.year, const.EVENT_YEAR_PERIOD)
+            queried_data2 = self.universal_query(next_year_date_from.day, next_year_date_from.month, next_year_date_from.year, date_to.day, date_to.month, date_to.year, const.EVENT_ONE_SHOT)
             queried_data2 = self.convert_one_shot_tuple(queried_data2)
             # *** Сливаем обе выборки
             queried_data1.extend(queried_data2)
@@ -357,6 +359,7 @@ class CDatabase(object):
             queried_data2 = self.convert_yearly_tuple(queried_data2, next_year_date_from)
             # *** Сливаем обе выборки
             queried_data1.extend(queried_data2)
+            # print(queried_data1)
             return queried_data1
         # *** Если дата по в следующем месяце
         if date_to.month != date_from.month:
@@ -371,10 +374,12 @@ class CDatabase(object):
             queried_data2 = self.universal_query(next_month_date_from.day, next_month_date_from.month, 0, date_to.day, date_to.month, 0, const.EVENT_YEAR_PERIOD)
             queried_data2 = self.convert_yearly_tuple(queried_data2, next_month_date_from)
             queried_data1.extend(queried_data2)
+            # print(queried_data1)
             return queried_data1
 
         queried_data=self.universal_query(date_from.day, date_from.month, 0, date_to.day, date_to.month, 0, const.EVENT_YEAR_PERIOD)
         queried_data = self.convert_yearly_tuple(queried_data, date_from)
+        # print(queried_data)
         return queried_data
             
 
