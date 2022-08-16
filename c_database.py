@@ -160,6 +160,7 @@ class CDatabase(object):
             event_age = dt.now().year - event_list[EVENT_LIST_YEAR_FIELD]
             one_digit = event_age % 10
             message = ""
+            origin_year = event_list[EVENT_LIST_YEAR_FIELD]
             # *** Поменяем год в списке на текущий
             event_list[EVENT_LIST_YEAR_FIELD] = pnew_date.year
             if event_list[EVENT_LIST_TYPE_ID_FIELD] == EVENT_TYPE_MEMORY_DAY:
@@ -168,17 +169,22 @@ class CDatabase(object):
                 message = f"({event_age}-я годовщина)"
             elif event_list[EVENT_LIST_TYPE_ID_FIELD] == EVENT_TYPE_BIRTH_DAY:
                 
+                print("**** ", event_list[EVENT_LIST_YEAR_FIELD])
                 # *** Для дня рождения всё сложнее...
-                if (one_digit == 0) or (one_digit >= 5):
+                if origin_year != 1900:
+
+                    if (one_digit == 0) or (one_digit >= 5):
+                        
+                        message = f"({event_age} лет)"
+                    elif one_digit == 1:
                     
-                    message = f"({event_age} лет)"
-                elif one_digit == 1:
+                        message = f"({event_age} год)"
+                    elif (one_digit >= 2) or (one_digit <= 4):
                     
-                    message = f"({event_age} год)"
-                elif (one_digit >= 2) or (one_digit <= 4):
-                    
-                    message = f"({event_age} года)"
-            
+                        message = f"({event_age} года)"
+                else:
+
+                    message = ""
             # *** Собираем дату события из года, месяца и дня
             event_date = dtime.date(event_list[EVENT_LIST_YEAR_FIELD], 
                                     event_list[EVENT_LIST_MONTH_FIELD], 

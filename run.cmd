@@ -1,4 +1,4 @@
 @echo off
-cd C:\Users\pap\Projects\-forget_me_not\
-start C:\Python\pythonw.exe main.py
-rem pause
+cd D:\home\projects\-forget_me_not\
+rem start 
+C:\Python\python.exe main.py
