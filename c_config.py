@@ -6,6 +6,7 @@ from pathlib import Path
 import json
 
 ALL_CONFIGS_FOLDER = ".config/"
+# ALL_CONFIGS_FOLDER = "C:/Users/app/.config/"
 CONFIG_FOLDER = ".config/forget-me-not/" 
 CONFIG_FILE_NAME = "forget-me-not.json"
 DATABASE_FILE_NAME = "forget-me-not.db"
